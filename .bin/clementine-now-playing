@@ -1,0 +1,10 @@
+#!/usr/bin/env python2
+import dbus
+
+player = dbus.SessionBus().get_object('org.mpris.clementine', '/Player')
+interface = dbus.Interface(
+    player, dbus_interface='org.freedesktop.MediaPlayer'
+)
+
+metadata = interface.GetMetadata()
+print '%(artist)s - %(title)s' % metadata

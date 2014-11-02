@@ -1,0 +1,23 @@
+#!/bin/bash
+# Prints the hex code for a molokai color
+
+case "$1" in
+    0) HEX=101010 ;;
+    1) HEX=960050 ;;
+    2) HEX=66aa11 ;;
+    3) HEX=c47f2c ;;
+    4) HEX=30309b ;;
+    5) HEX=7e40a5 ;;
+    6) HEX=3579a8 ;;
+    7) HEX=9999aa ;;
+    8) HEX=303030 ;;
+    9) HEX=ff0090 ;;
+    10) HEX=80ff00 ;;
+    11) HEX=ffba68 ;;
+    12) HEX=5f5fee ;;
+    13) HEX=bb88dd ;;
+    14) HEX=4eb4fa ;;
+    15) HEX=d0d0d0 ;;
+esac
+
+echo -n $HEX

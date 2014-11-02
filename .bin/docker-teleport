@@ -1,0 +1,10 @@
+#!/bin/bash
+# Poor man's image transfer system
+
+ARCHIVE=$(uuidgen -r).tar.gz
+echo "Saving..."
+docker save $1 | gzip -c > /tmp/$ARCHIVE
+echo "Copying..."
+scp /tmp/$ARCHIVE $2:. && rm /tmp/$ARCHIVE
+echo "Loading..."
+ssh $2 "docker load < $ARCHIVE && rm $ARCHIVE"

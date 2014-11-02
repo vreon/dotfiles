@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# TODO: Set a global env var for this or something?
+if [ "$HOSTNAME" = "kvothe" ]; then
+    HOST_COLOR="#5f5fee"
+else
+    HOST_COLOR="#7e40a5"
+fi
+
+dmenu_run -fn "Fantasque Sans Mono-15px" -sb $HOST_COLOR

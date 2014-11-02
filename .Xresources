@@ -1,0 +1,71 @@
+! Molokai theme
+*background: #101010
+*foreground: #d0d0d0
+*cursorColor: #d0d0d0
+*color0: #101010
+*color1: #960050
+*color2: #66aa11
+*color3: #c47f2c
+*color4: #30309b
+*color5: #7e40a5
+*color6: #3579a8
+*color7: #9999aa
+*color8: #303030
+*color9: #ff0090
+*color10: #80ff00
+*color11: #ffba68
+*color12: #5f5fee
+*color13: #bb88dd
+*color14: #4eb4fa
+*color15: #d0d0d0
+
+xterm*faceName: xft:Terminus-9:antialias=false
+xterm*termName:	xterm-256color
+
+xterm*dynamicColors: true
+urxvt*dynamicColors: on
+
+urxvt*saveLines: 16000
+
+! This sucks. Xresources only supports matching on full properties
+
+! Default
+urxvt*font: xft:Terminus-9:antialias=false
+urxvt*depth: 32
+*scrollBar: false
+*perl-ext-common: url-select,clipboard,fullscreen,font-size
+*keysym.M-u: perl:url-select:select_next
+*url-select.launcher: google-chrome-stable
+*url-select.underline: true
+*keysym.M-c: perl:clipboard:copy
+*keysym.M-v: perl:clipboard:paste
+*keysym.F11: perl:fullscreen:switch
+
+*keysym.Control-equal: perl:font-size:increase
+*keysym.Control-minus: perl:font-size:decrease
+
+! disable keycap picture insert mode
+*.iso14755: false
+*.iso14755_52: false
+
+urxvtlight*font: xft:Terminus-9:antialias=false
+urxvtlight*depth: 32
+urxvtlight*background: rgba:0200/0200/0200/4000
+
+urxvtbig*font: xft:Fantasque Sans Mono:size=13
+urxvtbig*letterSpace: -2
+
+urxvtbig2*font: xft:Fantasque Sans Mono:size=13
+urxvtbig2*letterSpace: -1
+
+urxvtlarge*font: xft:Fantasque Sans Mono:size=14
+urxvtlarge*letterSpace: -2
+
+urxvtlarge2*font: xft:Fantasque Sans Mono:size=14
+urxvtlarge2*letterSpace: -1
+
+urxvthuge*font: xft:Fantasque Sans Mono:size=16
+urxvthuge*letterSpace: -2
+
+urxvthuge2*font: xft:Fantasque Sans Mono:size=16
+urxvthuge2*letterSpace: -1

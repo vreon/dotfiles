@@ -1,0 +1,21 @@
+#!/bin/bash
+DOCUMENTS="$HOME/Documents"
+DOTFILES="$DOCUMENTS/Dotfiles"
+ARCHIVE="/mnt/archive"
+
+mkdir -p $HOME/.ssh
+mkdir -p $HOME/.virtualenvs
+
+ln -s $ARCHIVE/audio $HOME/Audio
+ln -s $DOTFILES/.bin $HOME/.bin
+ln -s $DOTFILES/.fonts $HOME/.fonts
+ln -s $DOTFILES/.gitignore_global $HOME/.gitignore_global
+ln -s $DOTFILES/.password-store $HOME/.password-store
+ln -s $DOTFILES/.ssh/config $HOME/.ssh/config
+ln -s $DOTFILES/.tmux.conf $HOME/.tmux.conf
+ln -s $DOTFILES/.vim $HOME/.vim
+ln -s $DOTFILES/.vimrc $HOME/.vimrc
+ln -s $DOTFILES/.XCompose $HOME/.XCompose
+ln -s $DOTFILES/.Xresources $HOME/.Xresources
+ln -s $DOTFILES/.zshrc $HOME/.zshrc
+ln -s $DOCUMENTS/Notes/TODO $HOME/TODO

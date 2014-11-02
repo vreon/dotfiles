@@ -1,0 +1,2 @@
+#!/bin/bash
+export DBUS_SESSION_BUS_ADDRESS=`cat /proc/$(pidof xfce4-session)/environ | tr "\0" "\n" | grep DBUS_SESSION_BUS_ADDRESS | cut -d "=" -f2-`
