@@ -55,8 +55,8 @@ bindkey "${key[Right]}" forward-char
 # virtualenvwrapper
 
 if [ -f /usr/bin/virtualenvwrapper.sh ]; then
-	export WORKON_HOME=$HOME/.virtualenvs
-	source /usr/bin/virtualenvwrapper.sh
+    export WORKON_HOME=$HOME/.virtualenvs
+    source /usr/bin/virtualenvwrapper.sh
 fi
 
 ###########################################################
