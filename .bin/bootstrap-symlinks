@@ -8,6 +8,7 @@ mkdir -p $HOME/.virtualenvs
 
 ln -s $ARCHIVE/audio $HOME/Audio
 ln -s $DOTFILES/.bin $HOME/.bin
+ln -s $DOTFILES/.config/user-dirs.dirs $HOME/.config/user-dirs.dirs
 ln -s $DOTFILES/.fonts $HOME/.fonts
 ln -s $DOTFILES/.gitignore_global $HOME/.gitignore_global
 ln -s $DOTFILES/.password-store $HOME/.password-store
