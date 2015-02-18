@@ -1,0 +1,67 @@
+#!/bin/bash
+# yest: track and share what you've been up to
+# depends on `toslack`
+
+EDITOR=${EDITOR:-vim}
+PAGER=${PAGER:-less}
+ON_DIR="${HOME}/.on"
+mkdir -p $ON_DIR && true
+
+function newest(){
+    echo "$ON_DIR/$(ls -Frt "$ON_DIR" | grep "[^/]$" | tail -n 1)"
+}
+
+function track() {
+    DATE=$(date +%Y%m%d)
+    TIME=$(date +%-I:%M%P)
+    echo "${TIME} $1" >> "${ON_DIR}/${DATE}.log"
+    exit 0
+}
+
+function preview() {
+    $PAGER "$(newest)"
+    exit 0
+}
+
+function edit() {
+    $EDITOR "$(newest)"
+    exit 0
+}
+
+function share() {
+    YEST_FILE=$(mktemp)
+    echo -ne "*Yesterday*: \n*Today*: " > "$YEST_FILE"
+    vim -o "$YEST_FILE" "$(newest)" && toslack -c "#standups" < "$YEST_FILE"
+    rm "$YEST_FILE"
+    exit 0
+}
+
+function invalid() {
+    echo "Invalid option: -$OPTARG" >&2
+    usage
+    exit 1
+}
+
+function usage() {
+    echo "yest: track and share what you've been up to"
+    echo "Usage: yest [-htsep]"
+    echo "Options: "
+    echo "  -h         Show this usage message"
+    echo "  -t <text>  Add <text> to today's projects"
+    echo "  -s         Review and share the most recent project log"
+    echo "  -e         Edit the most recent daily log in \$EDITOR"
+    echo "  -p         Preview the most recent daily log in \$PAGER"
+}
+
+while getopts ":pehst:" opt; do
+    case "$opt" in
+    h) usage && exit 0 ;;
+    t) track "$OPTARG" ;;
+    s) share ;;
+    e) edit ;;
+    p) preview ;;
+    \?) invalid ;;
+    esac
+done
+
+usage

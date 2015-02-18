@@ -1,0 +1,8 @@
+#!/bin/bash
+TASK=$(dmenu -fn "Fantasque Sans Mono-15px" -sb "#5f5fee" -p "on" < /dev/null)
+
+if [ -z "$TASK" ]; then
+    exit 1
+fi
+
+yest -t "$TASK"

@@ -133,6 +133,9 @@ super + ctrl + {g,f}
 super + ctrl + p
 	$HOME/.bin/dmenu_pass
 
+super + ctrl + o
+	$HOME/.bin/dmenu_yest
+
 ################################################################################
 # Media control
 
