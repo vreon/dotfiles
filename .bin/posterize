@@ -1,0 +1,3 @@
+#!/bin/sh
+# Duotone and threshold an image
+convert "$1" -threshold "$3" -level -50% -fill "$2" -tint 50 "$4"
