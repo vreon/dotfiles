@@ -1,0 +1,12 @@
+#!/bin/bash
+# Fetch a random wallpaper and colorize it
+
+. splash_config
+
+IMAGE_URL=$(curl -s "http://www.splashbase.co/api/v1/images/random" | jq -r ". | .large_url // .url")
+
+curl -so "$ORIG" "$IMAGE_URL" && \
+    duotone "$ORIG" "$(xcolor "$(hostcolor)")" > "$CURRENT" && \
+    splash_set
+
+echo "$IMAGE_URL"

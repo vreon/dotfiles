@@ -1,0 +1,9 @@
+#!/bin/bash
+# Save the current wallpaper
+
+. splash_config
+
+MD5=($(md5sum "$ORIG"))
+SAVED="${DIR}/${MD5}"
+cp "$ORIG" "$SAVED"
+echo "$SAVED"
