@@ -109,14 +109,6 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib  # rust
 ###########################################################
 # Prompt
 
-case $HOST in
-    slylandro) host_color=yellow ;;
-    pollux) host_color=blue ;;
-    chenjesu) host_color=magenta ;;
-    atuin) host_color=cyan ;;
-    kvothe) host_color=12 ;;  # bright blue
-    *) host_color=gray ;;
-esac
-
+export HOSTCOLOR=$(hostcolor)
 setopt prompt_subst
-PROMPT='%F{${host_color}}[%n@%m %~]${vcs_info_msg_0_}$%f '
+PROMPT='%F{${HOSTCOLOR}}[%n@%m %~]${vcs_info_msg_0_}$%f '
