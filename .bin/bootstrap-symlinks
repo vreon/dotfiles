@@ -20,5 +20,6 @@ ln -s $DOTFILES/.vim $HOME/.vim
 ln -s $DOTFILES/.vimrc $HOME/.vimrc
 ln -s $DOTFILES/.XCompose $HOME/.XCompose
 ln -s $DOTFILES/.Xresources $HOME/.Xresources
+ln -s $DOTFILES/.xinitrc $HOME/.xinitrc
 ln -s $DOTFILES/.zshrc $HOME/.zshrc
 ln -s $DOCUMENTS/Notes/TODO $HOME/TODO
