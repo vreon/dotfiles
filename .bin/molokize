@@ -1,8 +1,0 @@
-#!/bin/sh
-# Tint an image to a molokai color
-
-IN_FILE=$1
-INDEX=$2
-OUT_FILE=$3
-
-convert "$IN_FILE" -colorspace gray -sigmoidal-contrast 2,90% -fill \#$(molocolor "$INDEX") -tint 100 "$OUT_FILE"

@@ -1,0 +1,5 @@
+#!/bin/bash
+# Prints the hex code for a color from .Xresources
+
+colors=($(awk '/^.*\.color/{print $2}' $HOME/.Xresources))
+echo "${colors[$1]}"
