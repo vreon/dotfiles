@@ -1,0 +1,180 @@
+################################################################################
+# bspwm
+
+# Close a window
+super + w
+	bspc window -c
+
+# Cycle layout (monocle,tiled)
+super + t
+	bspc desktop -l next
+
+# Balance (equalize area)
+super + alt + b
+	bspc desktop -B
+
+# Equalize (reset splits)
+super + alt + e
+    bspc desktop -E
+
+# Switch window state
+super + {s,f,p,shift + p}
+	bspc window -t {floating,fullscreen,private,pseudo_tiled}
+
+# Toggle floating on desktop
+super + shift + s
+    bspc desktop -t floating
+
+# Focus cycle desktops
+super + {_,shift + } grave
+    bspc desktop -f {next,prev}
+
+# Focus cycle windows
+super + {_,shift + } Tab
+    bspc window -f {next,prev}
+
+# Swap window with last focused window
+super + apostrophe
+	bspc window -s last
+
+# Focus older/newer window
+super + {o,i}
+	bspc control --record-history off; \
+	bspc window {older,newer} -f; \
+	bspc control --record-history on
+
+# Move window to last manual selection
+super + y
+	bspc window -w last.manual
+
+# Swap window with biggest window
+super + m
+	bspc window -s biggest
+
+# Directional focus and directional swap
+super + {_,shift + }{h,j,k,l}
+	bspc window -{f,s} {left,down,up,right}
+
+# Cycle focus within desktop
+super + {_,shift + }c
+	bspc window -f {next,prev}
+
+# Circulate windows
+super + {comma,period}
+	bspc desktop -C {backward,forward}
+
+# Directional "preselect", for manual splitting
+super + ctrl + {h,j,k,l}
+	bspc window -p {left,down,up,right}
+
+# Clear preselection for window or whole desktop
+super + ctrl + {_,shift + }space
+	bspc {window -p cancel,desktop -c}
+
+# Grow window on edge
+super + alt + shift + {h,j,k,l}
+	bspc window -e {left -40,down +40,up -40,right +40}
+
+# Shrink window on edge
+super + alt + {h,j,k,l}
+	bspc window -e {right -40,up +40,down -40,left +40}
+
+# Set split ratio (for preselection)
+super + ctrl + {1-9}
+	bspc window -r 0.{1-9}
+
+# Focus desktop, move window to desktop
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f,window -d} ^{1-9,10}
+
+# Change window gap
+super + {plus,minus}
+    bspc config -d focused window_gap $((`bspc config -d focused window_gap` {+ 5,- 5} ))
+
+# Restore original gap
+super + equal
+    bspc config top_padding 20; bspc config -d focused window_gap 20
+
+# Rotation
+super + r ; {h,j,k,l} ; {9,2,1}
+    bspc window -R {left,down,up,right} {90,270,180}
+
+################################################################################
+# Mousey stuff
+
+# Focus on click (and pass the click down)
+~button1
+	bspc pointer -g focus
+
+# Move and resize windows with cursor
+super + button{1-3}
+	bspc pointer -g {move,resize_side,resize_corner}
+
+# Track cursor position when button is pressed
+super + !button{1-3}
+	bspc pointer -t %i %i
+
+# Terminate action when button is released
+super + @button{1-3}
+	bspc pointer -u
+
+################################################################################
+# Launchers
+
+super + Return
+	urxvt
+
+super + n
+	$HOME/.bin/dmenu_custom
+
+super + ctrl + {g,f}
+	{google-chrome-unstable,firefox}
+
+super + ctrl + p
+	$HOME/.bin/dmenu_pass
+
+################################################################################
+# Media control
+
+XF86Audio{Prev,Play,Next}
+    mpc -q {prev,toggle,next}
+
+# why yes, I am lazy
+super + {F7,F8,F9}
+    mpc -q {prev,toggle,next}
+
+super + shift + F8
+    mpc -q stop
+
+super + Escape ; m
+    notify-send -t 3000 "Now Playing" "$(mpc current -f '%artist%[ (%album%)]')\n$(mpc current -f '%title%')"
+
+################################################################################
+# Wallpaper control
+
+super + Escape ; w ; r
+    notify-send -t 3000 "fetching wallpaper..."; \
+    notify-send -t 3000 "using random wallpaper" "$($HOME/.bin/splash_random)"
+
+super + Escape ; w ; s
+    notify-send -t 3000 "wallpaper saved" "$($HOME/.bin/splash_save)"
+
+super + Escape ; w ; g
+    notify-send -t 3000 "using saved wallpaper" "$($HOME/.bin/splash_random_saved)"
+
+super + Escape ; w ; p ; {0-9}
+    notify-send -t 3000 "posterize $($HOME/.bin/splash_posterize {0-9}0%)"
+
+################################################################################
+# Reload/exit
+
+super + shift + q
+	bspc quit
+
+super + Escape ; s
+	pkill -USR1 -x sxhkd; \
+    notify-send -t 3000 "sxhkd" "configuration reloaded"
+    
+super + Escape ; c
+	pkill -USR1 -x compton; \
+    notify-send -t 3000 "compton" "configuration reloaded"

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+while true; do
+    echo "D$(df -h / | awk "NR == 2 {print \$5}")"
+    sleep 2h
+done

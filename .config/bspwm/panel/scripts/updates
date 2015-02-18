@@ -1,0 +1,6 @@
+#!/bin/sh
+
+while true; do
+    echo "U$(checkupdates | wc -l)"
+    sleep 2h
+done

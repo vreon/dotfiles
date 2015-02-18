@@ -1,0 +1,6 @@
+#!/bin/sh
+
+while true; do
+    echo "M$(mpc current -f "[%artist% - ][%title%|%file%]")"
+    mpc idle > /dev/null
+done
