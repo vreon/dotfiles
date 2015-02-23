@@ -290,7 +290,7 @@ class LayoutWidget(Widget):
 
 def main():
     space = TextWidget(' ')
-    separator = TextWidget(' | ', DARKGRAY)
+    separator = TextWidget('  ')
 
     bar = Bar()
 
