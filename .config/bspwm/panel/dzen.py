@@ -151,7 +151,7 @@ class EchoWidget(TextWidget):
 
 
 class MusicWidget(Widget):
-    """Display plain text that updates periodically."""
+    """Display the currently playing mpd track."""
     prefix = 'M'
 
     def __init__(self, max_length=None):
