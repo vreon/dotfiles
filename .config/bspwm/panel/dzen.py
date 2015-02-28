@@ -179,20 +179,30 @@ class MusicWidget(Widget):
         return _color(_icon('phones') + space + self.text, color)
 
 
-class UpdatesWidget(Widget):
-    """Display number of outdated packages."""
+class PacmanWidget(Widget):
+    """Display info about packages."""
     prefix = 'U'
 
     def __init__(self):
-        self.update('0')
+        self.update('0 0')
 
     def update(self, line):
-        self.width = (len(line) + 1) * FONT_CHAR_WIDTH + 8
-        self.num_updates = int(line)
+        self.num_updates, self.num_pacfiles = map(int, line.split())
+        self.width = (len(str(self.num_updates)) + 1) * FONT_CHAR_WIDTH + 8
+
+        if self.num_pacfiles:
+            self.width += (len(str(self.num_pacfiles)) + 1 * FONT_CHAR_WIDTH)
 
     def render(self):
         color = BRIGHTCYAN if self.num_updates else DARKGRAY
-        return _color('%s %s' % (_icon('pacman'), self.num_updates), color)
+        updates = _color('%s %s' % (_icon('pacman'), self.num_updates), color)
+        pacfiles = ''
+
+        if self.num_pacfiles:
+            pacfiles = _color('/', DARKGRAY) + \
+                _color(str(self.num_pacfiles), BRIGHTRED)
+
+        return updates + pacfiles
 
 
 class DiskUsageWidget(Widget):
@@ -309,7 +319,7 @@ def main():
         bar.add_widget(separator)
         bar.add_widget(DiskUsageWidget())
         bar.add_widget(separator)
-        bar.add_widget(UpdatesWidget())
+        bar.add_widget(PacmanWidget())
         bar.add_widget(separator)
         bar.add_widget(EchoWidget('S', LIGHTGRAY, icon='clock'))
         bar.add_widget(space)

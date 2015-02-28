@@ -1,6 +1,6 @@
 #!/bin/sh
 
 while true; do
-    echo "U$(checkupdates | wc -l)"
+    echo "U$(checkupdates | wc -l) $(pacfiles | wc -l)"
     sleep 2h
 done
