@@ -191,7 +191,7 @@ class PacmanWidget(Widget):
         self.width = (len(str(self.num_updates)) + 1) * FONT_CHAR_WIDTH + 8
 
         if self.num_pacfiles:
-            self.width += (len(str(self.num_pacfiles)) + 1 * FONT_CHAR_WIDTH)
+            self.width += (len(str(self.num_pacfiles)) + 1) * FONT_CHAR_WIDTH
 
     def render(self):
         color = BRIGHTCYAN if self.num_updates else DARKGRAY
