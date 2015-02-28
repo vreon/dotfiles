@@ -87,17 +87,40 @@ super + ctrl + {1-9}
 super + {_,shift + }{1-9,0}
 	bspc {desktop -f,window -d} ^{1-9,10}
 
-# Change window gap
-super + {plus,minus}
-    bspc config -d focused window_gap $((`bspc config -d focused window_gap` {+ 5,- 5} ))
-
-# Restore original gap
-super + equal
-    bspc config top_padding 20; bspc config -d focused window_gap 20
-
 # Rotation
 super + r ; {h,j,k,l} ; {9,2,1}
     bspc window -R {left,down,up,right} {90,270,180}
+
+################################################################################
+# Gap and padding tweaks
+
+# Change window gap
+super + ctrl + {plus,minus}
+    bspc config -d focused window_gap $((`bspc config -d focused window_gap` {+ 5,- 5} ))
+
+# Restore original window gap
+super + ctrl + equal
+    bspc config -d focused window_gap 20
+
+# Change desktop padding
+super + plus
+    bspc config -d focused top_padding $((`bspc config -d focused bottom_padding` + 5 )); \
+    bspc config -d focused left_padding $((`bspc config -d focused bottom_padding` + 5 )); \
+    bspc config -d focused right_padding $((`bspc config -d focused bottom_padding` + 5 )); \
+    bspc config -d focused bottom_padding $((`bspc config -d focused bottom_padding` + 5 ))
+
+super + minus
+    bspc config -d focused top_padding $((`bspc config -d focused bottom_padding` - 5 )); \
+    bspc config -d focused left_padding $((`bspc config -d focused bottom_padding` - 5 )); \
+    bspc config -d focused right_padding $((`bspc config -d focused bottom_padding` - 5 )); \
+    bspc config -d focused bottom_padding $((`bspc config -d focused bottom_padding` - 5 ))
+
+# Restore original desktop padding
+super + equal
+    bspc config -d focused top_padding 0; \
+    bspc config -d focused left_padding 0; \
+    bspc config -d focused right_padding 0; \
+    bspc config -d focused bottom_padding 0
 
 ################################################################################
 # Mousey stuff
