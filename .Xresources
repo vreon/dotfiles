@@ -20,7 +20,7 @@ urxvt.color14: #4eb4fa
 urxvt.color15: #d0d0d0
 
 urxvt.font: xft:Fantasque Sans Mono:size=13
-urxvt.letterSpace: -1
+urxvt.letterSpace: -2
 
 urxvt.saveLines: 8192
 urxvt.depth: 32
