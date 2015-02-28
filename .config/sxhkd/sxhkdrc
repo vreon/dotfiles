@@ -159,6 +159,9 @@ super + ctrl + p
 super + ctrl + o
 	$HOME/.bin/dmenu_yest
 
+XF86Launch6
+    xfce4-screenshooter -r
+
 ################################################################################
 # Media control
 
