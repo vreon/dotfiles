@@ -76,7 +76,6 @@ alias bp2='/usr/bin/env python2 -m bpython.cli'
 alias usage='du -h --max-depth=0 * | sort -hr'
 alias pyclean="find -regex '.*\.pyc\|.*__pycache__' -delete"
 alias docker-clean-images="docker images | grep '^<none>' | awk '{print \$3}' | xargs docker rmi"
-alias findpacnew="find /etc -regextype posix-extended -regex '.+\.pac(new|save|orig)' 2> /dev/null"
 alias hc="herbstclient"
 alias thr="docker run -it --rm"
 function whichpr {

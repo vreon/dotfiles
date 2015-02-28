@@ -1,0 +1,3 @@
+#!/bin/bash
+# List package files that need cleanup/merging
+find /etc /usr -regextype posix-extended -regex '.+\.pac(new|save|orig)' 2> /dev/null
