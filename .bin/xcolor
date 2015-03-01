@@ -1,5 +1,10 @@
 #!/bin/bash
 # Prints the hex code for a color from .Xresources
 
-colors=($(awk '/^.*\.color/{print $2}' $HOME/.Xresources))
-echo "${colors[$1]}"
+colors=($(xrdb -query | awk '/^.*[\.\*]color/{print $2}'))
+
+if [ -z "$1" ]; then
+    echo "${colors[*]}"
+else
+    echo "${colors[$1]}"
+fi
