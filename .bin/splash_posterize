@@ -1,9 +1,0 @@
-#!/bin/bash
-# Posterize the current wallpaper
-
-. splash_config
-
-posterize "$ORIG" "$(xcolor "$(hostcolor)")" "$1" > "$CURRENT" && \
-    splash_set
-
-echo "$1"
