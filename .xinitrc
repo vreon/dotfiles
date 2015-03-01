@@ -48,4 +48,5 @@ sh ~/.fehbg &
 compton -c -b
 sxhkd -f 50 &
 unclutter -root &
+urxvtd -q -f -o
 exec bspwm

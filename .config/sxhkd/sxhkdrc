@@ -149,7 +149,7 @@ super + @button{1-3}
 # Launchers
 
 super + Return
-	urxvt
+	urxvtc || urxvt
 
 super + n
 	$HOME/.bin/dmenu_custom
