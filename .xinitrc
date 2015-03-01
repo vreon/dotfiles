@@ -46,6 +46,6 @@ xrdb -load .Xresources
 xsetroot -cursor_name left_ptr
 sh ~/.fehbg &
 compton -c -b
-sxhkd &
+sxhkd -f 50 &
 unclutter -root &
 exec bspwm
