@@ -22,12 +22,7 @@ BRIGHTBLUE = '#5F5FEE'
 BRIGHTMAGENTA = '#BB88DD'
 BRIGHTCYAN = '#4EB4FA'
 
-FONT_FAMILY = 'Fantasque Sans Mono'
-FONT_SIZE = 9
 FONT_CHAR_WIDTH = 8  # determined experimentally >_>
-
-REGULAR = '%s-%d' % (FONT_FAMILY, FONT_SIZE)
-BOLD = REGULAR + ':Bold'
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ICON_DIR = os.path.join(BASE_DIR, 'icons')
@@ -40,9 +35,6 @@ def _color(str_, color):
 
 def _bg_color(str_, color):
     return '^bg(%s)%s^bg()' % (color, str_)
-
-def _font(str_, font):
-    return '^fn(%s)%s^fn(%s)' % (font, str_, REGULAR)
 
 def _clickable(str_, button, cmd):
     return '^ca(%d,%s)%s^ca()' % (button, cmd, str_)
