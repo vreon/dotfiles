@@ -9,10 +9,6 @@ super + w
 super + t
 	bspc desktop -l next
 
-# Balance (equalize area)
-super + alt + b
-	bspc desktop -B
-
 # Equalize (reset splits)
 super + alt + e
     bspc desktop -E
@@ -33,31 +29,13 @@ super + {_,shift + } grave
 super + {_,shift + } Tab
     bspc window -f {next,prev}
 
-# Swap window with last focused window
-super + apostrophe
-	bspc window -s last
-
-# Focus older/newer window
-super + {o,i}
-	bspc control --record-history off; \
-	bspc window {older,newer} -f; \
-	bspc control --record-history on
-
 # Move window to last manual selection
 super + y
 	bspc window -w last.manual
 
-# Swap window with biggest window
-super + m
-	bspc window -s biggest
-
 # Directional focus and directional swap
 super + {_,shift + }{h,j,k,l}
 	bspc window -{f,s} {left,down,up,right}
-
-# Cycle focus within desktop
-super + {_,shift + }c
-	bspc window -f {next,prev}
 
 # Circulate windows
 super + {comma,period}
@@ -66,10 +44,6 @@ super + {comma,period}
 # Directional "preselect", for manual splitting
 super + ctrl + {h,j,k,l}
 	bspc window -p {left,down,up,right}
-
-# Clear preselection for window or whole desktop
-super + ctrl + {_,shift + }space
-	bspc {window -p cancel,desktop -c}
 
 # Grow window on edge
 super + alt + shift + {h,j,k,l}
@@ -173,14 +147,8 @@ XF86Audio{Prev,Play,Next}
     mpc -q {prev,toggle,next}
 
 # why yes, I am lazy
-super + {F7,F8,F9}
-    mpc -q {prev,toggle,next}
-
-super + shift + F8
-    mpc -q stop
-
-super + Escape ; m
-    notify-send -t 3000 "Now Playing" "$(mpc current -f '%artist%[ (%album%)]')\n$(mpc current -f '%title%')"
+super + {F7,F8,F9,shift+F8}
+    mpc -q {prev,toggle,next,stop}
 
 ################################################################################
 # Wallpaper control
@@ -194,9 +162,6 @@ super + Escape ; w ; s
 
 super + Escape ; w ; g
     notify-send -t 3000 "using saved wallpaper" "$($HOME/.bin/splash_random_saved)"
-
-super + Escape ; w ; p ; {0-9}
-    notify-send -t 3000 "posterize $($HOME/.bin/splash_posterize {0-9}0%)"
 
 ################################################################################
 # Reload/exit
