@@ -91,6 +91,10 @@ super + {_,shift + }{1-9,0}
 super + r ; {h,j,k,l} ; {9,2,1}
     bspc window -R {left,down,up,right} {90,270,180}
 
+# Rotation double-tap shortcut
+super + r ; {h;h, j;j, k;k, l;l}
+    bspc window -R {left,down,up,right} 180
+
 ################################################################################
 # Gap and padding tweaks
 
