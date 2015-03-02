@@ -3,7 +3,7 @@
 
 . splash_config
 
-IMAGE_URL=$(curl -s "http://www.splashbase.co/api/v1/images/random" | jq -r ". | .large_url // .url")
+IMAGE_URL=$(curl -s "http://www.splashbase.co/api/v1/images/random?images_only=true" | jq -r ". | .large_url // .url")
 
 curl -so "$ORIG" "$IMAGE_URL" && \
     duotone "$ORIG" "$(xcolor "$(hostcolor)")" > "$CURRENT" && \
