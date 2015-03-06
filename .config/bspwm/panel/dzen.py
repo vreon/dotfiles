@@ -296,7 +296,6 @@ class VPNWidget(Widget):
 
     def __init__(self):
         self.update('')
-        self.networks = []
 
     def update(self, line):
         if not line:
