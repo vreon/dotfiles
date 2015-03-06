@@ -290,6 +290,34 @@ class LayoutWidget(Widget):
         )
 
 
+class VPNWidget(Widget):
+    """Display active VPN connections."""
+    prefix = 'V'
+
+    def __init__(self):
+        self.update('')
+        self.networks = []
+
+    def update(self, line):
+        if not line:
+            self.networks = []
+            self.width = 8
+            return
+
+        self.networks = line.split(',')
+        self.width = sum(((len(net) + 1) * FONT_CHAR_WIDTH + 8) for net in self.networks) + \
+            ((FONT_CHAR_WIDTH * 2) * (len(self.networks) - 1))
+
+    def render(self):
+        if self.networks:
+            return '  '.join([
+                _color('%s %s' % (_icon('net_wired'), net), BRIGHTGREEN)
+                for net in self.networks
+            ])
+        else:
+            return _color(_icon('net_wired'), DARKGRAY)
+
+
 def main():
     space = TextWidget(' ')
     separator = TextWidget('  ')
@@ -308,6 +336,8 @@ def main():
 
     with bar.select_side(Bar.RIGHT):
         bar.add_widget(MusicWidget(max_length=60))
+        bar.add_widget(separator)
+        bar.add_widget(VPNWidget())
         bar.add_widget(separator)
         bar.add_widget(DiskUsageWidget())
         bar.add_widget(separator)

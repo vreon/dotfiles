@@ -17,6 +17,7 @@ clock -sf "S%Y-%m-%d %-I:%M%P" > "$PANEL_FIFO" &
 $PANEL_HOME/scripts/updates > "$PANEL_FIFO" &
 $PANEL_HOME/scripts/disk > "$PANEL_FIFO" &
 $PANEL_HOME/scripts/playing > "$PANEL_FIFO" &
+$PANEL_HOME/scripts/vpn > "$PANEL_FIFO" &
 
 cat "$PANEL_FIFO" | $PANEL_HOME/dzen.py | dzen2 -ta l -w 1920 -h 20 -dock -fg "#d0d0d0" -bg "#101010" -fn "Fantasque Sans Mono-12px" &
 
