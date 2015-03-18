@@ -128,8 +128,8 @@ super + Return
 super + n
 	$HOME/.bin/dmenu_custom
 
-super + ctrl + {g,f}
-	{google-chrome-unstable,firefox}
+super + ctrl + {u,i,f}
+	{google-chrome-unstable,google-chrome-unstable --incognito,firefox}
 
 super + ctrl + p
 	$HOME/.bin/dmenu_pass
