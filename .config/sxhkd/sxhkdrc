@@ -132,7 +132,7 @@ super + ctrl + {u,i,f}
 	{google-chrome-unstable,google-chrome-unstable --incognito,firefox}
 
 super + ctrl + p
-	$HOME/.bin/dmenu_pass
+	$HOME/.bin/dmenu_pass --type
 
 super + ctrl + o
 	$HOME/.bin/dmenu_yest
