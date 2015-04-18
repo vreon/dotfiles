@@ -6,7 +6,7 @@ super + w
 	bspc window -c
 
 # Cycle layout (monocle,tiled)
-super + t
+super + m
 	bspc desktop -l next
 
 # Equalize (reset splits)
