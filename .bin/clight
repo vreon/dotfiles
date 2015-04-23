@@ -74,7 +74,7 @@ def _map_hue(value):
 
 
 def _map_sat(value):
-  return int(_lerp(0, 254, value))
+    return int(_lerp(0, 254, value))
 
 
 def light_get(args):
