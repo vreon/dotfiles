@@ -1,0 +1,50 @@
+{
+    "api_root": "http://192.168.1.33/api/huecontrol",
+    "presets": {
+        "natural": {
+            "ct": 4500,
+            "bri": 1
+        },
+        "moon": {
+            "hue": 240,
+            "sat": 0.3,
+            "bri": 0
+        },
+        "hacking": {
+            "hue": 240,
+            "sat": 1,
+            "bri": 0.2
+        },
+        "rage": {
+            "hue": 0,
+            "sat": 1,
+            "bri": 1
+        },
+        "matrix": {
+            "hue": 160,
+            "sat": 1,
+            "bri": 0.5
+        },
+        "chenjesu": {
+            "hue": 277,
+            "sat": 0.61,
+            "bri": 0.64
+        },
+        "warm": {
+            "ct": 3500,
+            "bri": 1
+        },
+        "warmer": {
+            "ct": 2500,
+            "bri": 1
+        },
+        "cool": {
+            "ct": 5500,
+            "bri": 1
+        },
+        "cooler": {
+            "ct": 6500,
+            "bri": 1
+        }
+    }
+}

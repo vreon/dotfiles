@@ -1,0 +1,199 @@
+#!/usr/bin/env python
+"""
+Control (Philips Hue) lights from the command line.
+"""
+
+# TODO:
+# Define light groups, presets for groups ("scenes") in config
+
+import os
+import sys
+import requests
+import argparse
+import json
+
+XDG_CONFIG_HOME = os.environ.get('XDG_CONFIG_HOME', os.path.expanduser('~/.config'))
+CLIGHT_JSON = os.environ.get('CLIGHT_JSON', os.path.join(XDG_CONFIG_HOME, 'clight.json'))
+
+
+def _fatal(msg):
+    sys.stderr.write('{}\n'.format(msg))
+    sys.exit(1)
+
+
+def _put(api_root, light, payload):
+    requests.put(api_root + '/lights/%d/state' % light, json=payload)
+
+
+def _put_using_args(args, payload):
+    payload['transitiontime'] = int(args.transition * 10)
+    _put(args.config['api_root'], args.light, payload)
+
+
+def _get(api_root, light):
+    resp = requests.get(api_root + '/lights/%d' % light)
+    return resp.json()
+
+
+def _get_using_args(args):
+    return _get(args.config['api_root'], args.light)
+
+
+def _load_config():
+    try:
+        with open(CLIGHT_JSON, 'r') as f:
+            return json.load(f)
+    except (TypeError, ValueError) as e:
+        # TODO
+        _fatal('invalid json config')
+    except IOError:
+        # TODO
+        _fatal('failed to read config')
+
+
+def _lerp(start, end, alpha):
+    """Return the value at position `alpha` between `start` and `end`."""
+    return (end - start) * alpha + start
+
+
+def _unlerp(start, end, value):
+    """Return the normalized position of `value` between `start` and `end`."""
+    return (value - start) / (end - start)
+
+
+def _map_ct(value):
+    return int(_lerp(500, 153, _unlerp(2000, 6500, value)))
+
+
+def _map_bri(value):
+    return int(_lerp(1, 254, value))
+
+
+def _map_hue(value):
+    return int(_lerp(0, 65535, _unlerp(0, 359, value)))
+
+
+def _map_sat(value):
+  return int(_lerp(0, 254, value))
+
+
+def light_get(args):
+    status = _get_using_args(args)
+    print('{0} - {1} - {2}'.format(
+        status['name'],
+        status['type'],
+        'on' if status['state']['on'] else 'off'
+    ))
+    import json
+
+
+def light_on(args):
+    _put_using_args(args, {'on': True})
+
+
+def light_off(args):
+    _put_using_args(args, {'on': False})
+
+
+def light_temperature(args):
+    _put_using_args(args, {'ct': _map_ct(args.value)})
+
+
+def light_brightness(args):
+    _put_using_args(args, {'bri': _map_bri(args.value)})
+
+
+def light_hue(args):
+    _put_using_args(args, {'hue': _map_hue(args.value)})
+
+
+def light_saturation(args):
+    _put_using_args(args, {'sat': _map_sat(args.value)})
+
+
+def light_preset(args):
+    presets = args.config['presets']
+    if not args.name in presets:
+        _fatal("no preset named '{}'".format(args.name))
+    _put_using_args(args, _map_preset(presets[args.name]))
+
+
+def list_presets(args):
+    for preset in sorted(args.config['presets']):
+        print(preset)
+
+
+MAPPERS = {
+    'ct': _map_ct,
+    'bri': _map_bri,
+    'hue': _map_hue,
+    'sat': _map_sat,
+}
+
+
+def _map_preset(preset):
+    mapped = preset.copy()
+    for key, value in preset.items():
+        mapped[key] = MAPPERS.get(key, lambda v: v)(value)
+    mapped['on'] = True
+    return mapped
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers()
+
+    parser.set_defaults(config=_load_config())
+
+    def cmd(name, func, **kwargs):
+        p = subparsers.add_parser(name, **kwargs)
+        p.set_defaults(func=func)
+        p.arg = lambda *a, **k: p.add_argument(*a, **k) and p
+        return p
+
+    cmd('get', light_get, help='show light status')\
+        .arg('-l', '--light', type=int, default=1, help='light to query')\
+        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+
+    cmd('on', light_on, help='turn light on')\
+        .arg('-l', '--light', type=int, default=1, help='light to turn on')\
+        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+
+    cmd('off', light_off, help='turn light off')\
+        .arg('-l', '--light', type=int, default=1, help='light to turn off')\
+        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+
+    cmd('temp', light_temperature, help='change color temperature')\
+        .arg('value', type=int, help='temperature in Kelvin (2000 - 6500)')\
+        .arg('-l', '--light', type=int, default=1, help='light to adjust')\
+        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+
+    cmd('hue', light_hue, help='change hue')\
+        .arg('value', type=int, help='hue value (0 - 360)')\
+        .arg('-l', '--light', type=int, default=1, help='light to adjust')\
+        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+
+    cmd('sat', light_saturation, help='change saturation')\
+        .arg('value', type=float, help='saturation value (0 - 1)')\
+        .arg('-l', '--light', type=int, default=1, help='light to adjust')\
+        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+
+    cmd('bri', light_brightness, help='change brightness')\
+        .arg('value', type=float, help='brightness value (0 - 1)')\
+        .arg('-l', '--light', type=int, default=1, help='light to adjust')\
+        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+
+    cmd('preset', light_preset, help='select a preset')\
+        .arg('name', type=str, help='preset name')\
+        .arg('-l', '--light', type=int, default=1, help='light to adjust')\
+        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+
+    cmd('presets', list_presets, help='list all presets')
+
+    # Show help if invoked with no args
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(1)
+
+    args = parser.parse_args()
+    args.func(args)
