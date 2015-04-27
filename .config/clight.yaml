@@ -1,0 +1,31 @@
+defaults:
+    bridge: main
+    lights: office
+    transition: 1
+bridges:
+    main:
+        url: http://192.168.1.33/api/huecontrol
+groups:
+    all: [1, 2, 3, 4, 5]
+    office: [1, 2]
+    bedroom: [3, 5]
+    living-room: [4]
+scenes:
+    deep-sea:
+        - {hue: 249, sat: 1, bri: 1}
+        - {hue: 6, sat: 0.9, bri: 1}
+    mass-effect:
+        - {hue: 240, sat: 1, bri: 1}
+        - {hue: 35, sat: 1, bri: 1}
+    natural:
+        - {ct: 4500, bri: 1}
+        - {ct: 3500, bri: 0.4}
+    moon: [{hue: 240, sat: 0.3, bri: 0}]
+    hacking: [{hue: 240, sat: 1, bri: 0.2}]
+    rage: [{hue: 0, sat: 1, bri: 1}]
+    matrix: [{hue: 160, sat: 1, bri: 0.5}]
+    chenjesu: [{hue: 277, sat: 0.61, bri: 0.64}]
+    warm: [{ct: 3500, bri: 1}]
+    warmer: [{ct: 2500, bri: 1}]
+    cool: [{ct: 5500, bri: 1}]
+    cooler: [{ct: 6501, bri: 1}]

@@ -15,7 +15,7 @@ ln -s $DOTFILES/.config/bspwm $HOME/.config/bspwm
 ln -s $DOTFILES/.config/sxhkd $HOME/.config/sxhkd
 ln -s $DOTFILES/.config/compton.conf $HOME/.config/compton.conf
 ln -s $DOTFILES/.config/mpd/mpd.conf $HOME/.config/mpd/mpd.conf
-ln -s $DOTFILES/.config/clight.json $HOME/.config/clight.json
+ln -s $DOTFILES/.config/clight.yaml $HOME/.config/clight.yaml
 ln -s $DOTFILES/.fonts $HOME/.fonts
 ln -s $DOTFILES/.gitignore_global $HOME/.gitignore_global
 ln -s $DOTFILES/.password-store $HOME/.password-store

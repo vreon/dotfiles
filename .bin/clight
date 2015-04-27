@@ -11,7 +11,7 @@ import json
 import itertools
 
 XDG_CONFIG_HOME = os.environ.get('XDG_CONFIG_HOME', os.path.expanduser('~/.config'))
-CLIGHT_JSON = os.environ.get('CLIGHT_JSON', os.path.join(XDG_CONFIG_HOME, 'clight.json'))
+CLIGHT_CONFIG = os.path.join(XDG_CONFIG_HOME, 'clight')
 CONFIG = {}
 
 ###############################################################################
@@ -34,14 +34,23 @@ def _unlerp(start, end, value):
 
 def _load_config():
     try:
-        with open(CLIGHT_JSON, 'r') as f:
-            return json.load(f)
-    except (TypeError, ValueError) as e:
-        # TODO
-        _fatal('invalid json config')
-    except IOError:
-        # TODO
-        _fatal('failed to read config')
+        import yaml
+        try:
+            with open(CLIGHT_CONFIG + '.yaml', 'r') as f:
+                return yaml.safe_load(f)
+        except yaml.YAMLError:
+            # TODO
+            _fatal('invalid yaml config')
+    except (ImportError, IOError):
+        try:
+            with open(CLIGHT_JSON + '.json', 'r') as f:
+                return json.load(f)
+        except (TypeError, ValueError):
+            # TODO
+            _fatal('invalid json config')
+        except IOError:
+            # TODO
+            _fatal('failed to read any config')
 
 
 def _print_light(id, light_info):
