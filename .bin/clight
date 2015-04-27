@@ -1,42 +1,35 @@
 #!/usr/bin/env python
 """
-Control (Philips Hue) lights from the command line.
+Control Philips Hue lights from the command line.
 """
-
-# TODO:
-# Define light groups, presets for groups ("scenes") in config
 
 import os
 import sys
 import requests
 import argparse
 import json
+import itertools
 
 XDG_CONFIG_HOME = os.environ.get('XDG_CONFIG_HOME', os.path.expanduser('~/.config'))
 CLIGHT_JSON = os.environ.get('CLIGHT_JSON', os.path.join(XDG_CONFIG_HOME, 'clight.json'))
+CONFIG = {}
 
+###############################################################################
+# General utilities
 
 def _fatal(msg):
     sys.stderr.write('{}\n'.format(msg))
     sys.exit(1)
 
 
-def _put(api_root, light, payload):
-    requests.put(api_root + '/lights/%d/state' % light, json=payload)
+def _lerp(start, end, alpha):
+    """Return the value at position `alpha` between `start` and `end`."""
+    return (end - start) * alpha + start
 
 
-def _put_using_args(args, payload):
-    payload['transitiontime'] = int(args.transition * 10)
-    _put(args.config['api_root'], args.light, payload)
-
-
-def _get(api_root, light):
-    resp = requests.get(api_root + '/lights/%d' % light)
-    return resp.json()
-
-
-def _get_using_args(args):
-    return _get(args.config['api_root'], args.light)
+def _unlerp(start, end, value):
+    """Return the normalized position of `value` between `start` and `end`."""
+    return (value - start) / (end - start)
 
 
 def _load_config():
@@ -51,99 +44,216 @@ def _load_config():
         _fatal('failed to read config')
 
 
-def _lerp(start, end, alpha):
-    """Return the value at position `alpha` between `start` and `end`."""
-    return (end - start) * alpha + start
+def _print_light(id, light_info):
+    print('{0}. {1} - {2} - {3}'.format(
+        id,
+        light_info['name'],
+        light_info['type'],
+        'on' if light_info['state']['on'] else 'off'
+    ))
+
+    print('   ', end='')
+
+    if 'hue' in light_info['state']:
+        print('hue: %d, ' % _from_hue(light_info['state']['hue']), end='')
+
+    if 'sat' in light_info['state']:
+        print('sat: %0.2f, ' % _from_sat(light_info['state']['sat']), end='')
+
+    print('bri: %0.2f' % _from_bri(light_info['state']['bri']))
 
 
-def _unlerp(start, end, value):
-    """Return the normalized position of `value` between `start` and `end`."""
-    return (value - start) / (end - start)
+def light_selection(light_selection_str):
+    light_ids = []
+
+    for piece in light_selection_str.split(','):
+        if piece in CONFIG['groups']:
+            light_ids.extend(CONFIG['groups'][piece])
+        else:
+            light_ids.append(int(piece))
+
+    return light_ids
 
 
-def _map_ct(value):
+###############################################################################
+# Hue HTTP API
+
+class Bridge(object):
+    def __init__(self, url):
+        self.url = url
+
+    def get_light(self, light_id):
+        return requests.get(self.url + '/lights/%d' % light_id).json()
+
+    def get_lights(self):
+        return requests.get(self.url + '/lights').json()
+
+    def update_light(self, light_id, payload):
+        requests.put(self.url + '/lights/%d/state' % light_id, json=payload)
+
+    def group(self, light_ids):
+        return Group([Light(self, id) for id in light_ids])
+
+
+class Light(object):
+    def __init__(self, bridge, id):
+        self.bridge = bridge
+        self.id = id
+
+    def update(self, payload):
+        self.bridge.update_light(self.id, payload)
+
+    def status(self):
+        return self.bridge.get_light(self.id)
+
+
+class Group(object):
+    def __init__(self, lights):
+        self.lights = lights
+
+    def set_scene(self, scene, transition=1):
+        for preset, light in zip(itertools.cycle(scene), self.lights):
+            print("{} -> {}".format(light.id, preset))
+            payload = _payload_from_preset(preset)
+            payload['transitiontime'] = _to_transitiontime(transition)
+            light.update(payload)
+
+    def update(self, payload):
+        for light in self.lights:
+            light.update(payload)
+
+
+###############################################################################
+# Value range helpers
+
+def _to_ct(value):
     return int(_lerp(500, 153, _unlerp(2000, 6500, value)))
 
 
-def _map_bri(value):
+def _to_bri(value):
     return int(_lerp(1, 254, value))
 
 
-def _map_hue(value):
+def _from_bri(value):
+    return _unlerp(1, 254, value)
+
+
+def _to_hue(value):
     return int(_lerp(0, 65535, _unlerp(0, 359, value)))
 
 
-def _map_sat(value):
+def _from_hue(value):
+    return round(_lerp(0, 359, _unlerp(0, 65535, value)))
+
+
+def _to_sat(value):
     return int(_lerp(0, 254, value))
 
 
-def light_get(args):
-    status = _get_using_args(args)
-    print('{0} - {1} - {2}'.format(
-        status['name'],
-        status['type'],
-        'on' if status['state']['on'] else 'off'
-    ))
-    import json
+def _from_sat(value):
+    return _unlerp(0, 254, value)
 
 
-def light_on(args):
-    _put_using_args(args, {'on': True})
+def _to_transitiontime(seconds):
+    return int(seconds * 10)
 
 
-def light_off(args):
-    _put_using_args(args, {'on': False})
-
-
-def light_temperature(args):
-    _put_using_args(args, {'ct': _map_ct(args.value)})
-
-
-def light_brightness(args):
-    _put_using_args(args, {'bri': _map_bri(args.value)})
-
-
-def light_hue(args):
-    _put_using_args(args, {'hue': _map_hue(args.value)})
-
-
-def light_saturation(args):
-    _put_using_args(args, {'sat': _map_sat(args.value)})
-
-
-def light_preset(args):
-    presets = args.config['presets']
-    if not args.name in presets:
-        _fatal("no preset named '{}'".format(args.name))
-    _put_using_args(args, _map_preset(presets[args.name]))
-
-
-def list_presets(args):
-    for preset in sorted(args.config['presets']):
-        print(preset)
-
-
-MAPPERS = {
-    'ct': _map_ct,
-    'bri': _map_bri,
-    'hue': _map_hue,
-    'sat': _map_sat,
+TO_MAPPERS = {
+    'ct': _to_ct,
+    'bri': _to_bri,
+    'hue': _to_hue,
+    'sat': _to_sat,
 }
 
 
-def _map_preset(preset):
-    mapped = preset.copy()
+def _payload_from_preset(preset):
+    payload = preset.copy()
     for key, value in preset.items():
-        mapped[key] = MAPPERS.get(key, lambda v: v)(value)
-    mapped['on'] = True
-    return mapped
+        payload[key] = TO_MAPPERS.get(key, lambda v: v)(value)
+    payload['on'] = True
+    return payload
+
+
+###############################################################################
+# Commands
+
+def light_get(args):
+    for light in args.bridge.group(args.lights).lights:
+        _print_light(light.id, light.status())
+
+
+def list_status(args):
+    lights = args.bridge.get_lights()
+    for id, light_info in sorted(lights.items()):
+        _print_light(id, light_info)
+
+
+def light_on(args):
+    args.bridge.group(args.lights).update({
+        'on': True,
+        'transitiontime': _to_transitiontime(args.transition),
+    })
+
+
+def light_off(args):
+    args.bridge.group(args.lights).update({
+        'on': False,
+        'transitiontime': _to_transitiontime(args.transition),
+    })
+
+
+def light_temperature(args):
+    args.bridge.group(args.lights).update({
+        'ct': _to_ct(args.value),
+        'transitiontime': _to_transitiontime(args.transition),
+    })
+
+
+def light_brightness(args):
+    args.bridge.group(args.lights).update({
+        'bri': _to_bri(args.value),
+        'transitiontime': _to_transitiontime(args.transition),
+    })
+
+
+def light_hue(args):
+    args.bridge.group(args.lights).update({
+        'hue': _to_hue(args.value),
+        'transitiontime': _to_transitiontime(args.transition),
+    })
+
+
+def light_saturation(args):
+    args.bridge.group(args.lights).update({
+        'sat': _to_sat(args.value),
+        'transitiontime': _to_transitiontime(args.transition),
+    })
+
+
+def light_scene(args):
+    # TODO: catch "no such scene" ValueError
+    scene = CONFIG['scenes'][args.name]
+    args.bridge.group(args.lights).set_scene(scene, transition=args.transition)
+
+
+def light_effect(args):
+    args.bridge.group(args.lights).update({'effect': args.name})
+
+
+def light_alert(args):
+    args.bridge.group(args.lights).update({'alert': args.name})
+
+
+def list_scenes(args):
+    for scene in sorted(CONFIG['scenes']):
+        print(scene)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers()
 
-    parser.set_defaults(config=_load_config())
+    CONFIG = _load_config()
 
     def cmd(name, func, **kwargs):
         p = subparsers.add_parser(name, **kwargs)
@@ -152,43 +262,51 @@ if __name__ == '__main__':
         return p
 
     cmd('get', light_get, help='show light status')\
-        .arg('-l', '--light', type=int, default=1, help='light to query')\
-        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+        .arg('-l', '--lights', type=light_selection, help='comma-separated ints or group name')
 
     cmd('on', light_on, help='turn light on')\
-        .arg('-l', '--light', type=int, default=1, help='light to turn on')\
-        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+        .arg('-l', '--lights', type=light_selection, help='comma-separated ints or group name')\
+        .arg('-t', '--transition', type=float, help='transition duration (seconds)')
 
     cmd('off', light_off, help='turn light off')\
-        .arg('-l', '--light', type=int, default=1, help='light to turn off')\
-        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+        .arg('-l', '--lights', type=light_selection, help='comma-separated ints or group name')\
+        .arg('-t', '--transition', type=float, help='transition duration (seconds)')
 
-    cmd('temp', light_temperature, help='change color temperature')\
+    cmd('ct', light_temperature, aliases=['temp', 'temperature'], help='change color temperature')\
         .arg('value', type=int, help='temperature in Kelvin (2000 - 6500)')\
-        .arg('-l', '--light', type=int, default=1, help='light to adjust')\
-        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+        .arg('-l', '--lights', type=light_selection, help='comma-separated ints or group name')\
+        .arg('-t', '--transition', type=float, help='transition duration (seconds)')
 
     cmd('hue', light_hue, help='change hue')\
         .arg('value', type=int, help='hue value (0 - 360)')\
-        .arg('-l', '--light', type=int, default=1, help='light to adjust')\
-        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+        .arg('-l', '--lights', type=light_selection, help='comma-separated ints or group name')\
+        .arg('-t', '--transition', type=float, help='transition duration (seconds)')
 
-    cmd('sat', light_saturation, help='change saturation')\
+    cmd('sat', light_saturation, aliases=['saturation'], help='change saturation')\
         .arg('value', type=float, help='saturation value (0 - 1)')\
-        .arg('-l', '--light', type=int, default=1, help='light to adjust')\
-        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+        .arg('-l', '--lights', type=light_selection, help='comma-separated ints or group name')\
+        .arg('-t', '--transition', type=float, help='transition duration (seconds)')
 
-    cmd('bri', light_brightness, help='change brightness')\
+    cmd('bri', light_brightness, aliases=['brightness'], help='change brightness')\
         .arg('value', type=float, help='brightness value (0 - 1)')\
-        .arg('-l', '--light', type=int, default=1, help='light to adjust')\
-        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+        .arg('-l', '--lights', type=light_selection, help='comma-separated ints or group name')\
+        .arg('-t', '--transition', type=float, help='transition duration (seconds)')
 
-    cmd('preset', light_preset, help='select a preset')\
-        .arg('name', type=str, help='preset name')\
-        .arg('-l', '--light', type=int, default=1, help='light to adjust')\
-        .arg('-t', '--transition', type=float, default=1, help='transition duration (seconds)')
+    cmd('scene', light_scene, help='select a scene')\
+        .arg('name', type=str, help='scene name')\
+        .arg('-l', '--lights', type=light_selection, help='comma-separated ints or group name')\
+        .arg('-t', '--transition', type=float, help='transition duration (seconds)')
 
-    cmd('presets', list_presets, help='list all presets')
+    cmd('effect', light_effect, help='select an effect')\
+        .arg('name', type=str, help='effect name ("none" or "colorloop")')\
+        .arg('-l', '--lights', type=light_selection, help='comma-separated ints or group name')
+
+    cmd('alert', light_alert, help='select an alert')\
+        .arg('name', type=str, help='alert name ("none", "select", or "lselect")')\
+        .arg('-l', '--lights', type=light_selection, help='comma-separated ints or group name')
+
+    cmd('scenes', list_scenes, help='list all scenes')
+    cmd('status', list_status, help='list all lights')
 
     # Show help if invoked with no args
     if len(sys.argv) == 1:
@@ -196,4 +314,20 @@ if __name__ == '__main__':
         sys.exit(1)
 
     args = parser.parse_args()
+
+    if 'defaults' in CONFIG:
+        defaults = CONFIG['defaults']
+
+        if getattr(args, 'bridge', None) is None:
+            args.bridge = defaults.get('bridge')
+
+        if getattr(args, 'lights', None) is None:
+            args.lights = light_selection(defaults.get('lights'))
+
+        if getattr(args, 'transition', None) is None:
+            args.transition = int(defaults.get('transition', 1))
+
+    if getattr(args, 'bridge', None) is not None:
+        args.bridge = Bridge(CONFIG['bridges'][args.bridge]['url'])
+
     args.func(args)
