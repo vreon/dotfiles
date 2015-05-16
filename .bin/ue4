@@ -1,4 +1,4 @@
 #!/bin/bash
-pushd /mnt/archive/builds/UnrealEngine-3dluvr/Engine/Binaries/Linux > /dev/null
+pushd /mnt/archive/builds/UnrealEngine/Engine/Binaries/Linux > /dev/null
 ./UE4Editor
 popd > /dev/null
