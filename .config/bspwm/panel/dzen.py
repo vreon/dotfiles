@@ -274,7 +274,7 @@ class LayoutWidget(Widget):
     prefix = 'W'
 
     def __init__(self):
-        self.width = FONT_CHAR_WIDTH
+        self.width = 13
         self.layout = '?'
 
     def update(self, line):
@@ -284,9 +284,41 @@ class LayoutWidget(Widget):
                 self.layout = bit[1]
 
     def render(self):
+        icon_name = {
+            'T': 'big/square_tiled',
+            'M': 'big/square_monocle',
+            '?': 'big/square_tiled',
+        }[self.layout]
+        color = DARKGRAY if self.layout == 'T' else LIGHTGRAY
         return _clickable(
-            _color(self.layout, DARKGRAY),
+            _color(_icon(icon_name), color),
             1, 'bspc desktop -l next'
+        )
+
+
+class FloatingWidget(Widget):
+    """Display bspwm floating flag."""
+    prefix = 'W'
+
+    def __init__(self):
+        self.width = 13
+        self.floating = False
+
+    def update(self, line):
+        bits = line.split(':')
+        for bit in bits:
+            if bit.startswith('4'):
+                self.floating = bit[1] == 'y'
+
+    def render(self):
+        icon_name = {
+            True: 'big/square_floating',
+            False: 'big/square_monocle',
+        }[self.floating]
+        color = LIGHTGRAY if self.floating else DARKGRAY
+        return _clickable(
+            _color(_icon(icon_name), color),
+            1, 'bspc desktop -t floating'
         )
 
 
@@ -328,9 +360,10 @@ def main():
         bar.add_widget(GliderWidget())
         bar.add_widget(space)
         bar.add_widget(WorkspacesWidget())
-        # bar.add_widget(space)
-        # bar.add_widget(LayoutWidget())  # Not actually all that useful...
-        bar.add_widget(separator)
+        bar.add_widget(space)
+        bar.add_widget(LayoutWidget())
+        bar.add_widget(FloatingWidget())
+        bar.add_widget(space)
         bar.add_widget(EchoWidget('T', DARKGRAY, max_length=60))
 
     with bar.select_side(Bar.RIGHT):
