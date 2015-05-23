@@ -14,7 +14,7 @@ scenes:
     deep-sea:
         - {hue: 249, sat: 1, bri: 1}
         - {hue: 6, sat: 0.9, bri: 1}
-    mass-effect:
+    scifi:
         - {hue: 240, sat: 1, bri: 1}
         - {hue: 35, sat: 1, bri: 1}
     natural:
