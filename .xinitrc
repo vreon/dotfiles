@@ -10,12 +10,10 @@ fi
 
 redshift &  # Prevent self from going blind
 
-# Fix keyboard oddities
-# ... or, depending on your perpective, add them
-# TODO: Move these into the keymap so the console uses them too!
-# see: https://wiki.archlinux.org/index.php/KEYMAP
-setxkbmap -option "caps:swapescape"
+# Fix keyboard
 setxkbmap -option "compose:rwin"
+setxkbmap -option "caps:ctrl_modifier"
+xcape -e "Caps_Lock=Escape"
 
 # xfce4
 # setxkbmap -option "altwin:swap_alt_win"
