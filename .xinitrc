@@ -21,17 +21,6 @@ setxkbmap -option "compose:rwin"
 # setxkbmap -option "altwin:swap_alt_win"
 # exec startxfce4
 
-# xmonad
-# xfdesktop &
-# xsetroot -cursor_name left_ptr
-# exec xmonad
-
-# dwm
-# exec dwm
-# TODO: Implement startdwm
-# see: https://wiki.archlinux.org/index.php/Dwm#Using_dbus_with_dwm
-# exec dbus-launch --sh-syntax --exit-with-session ~/bin/startdwm
-
 # herbstluftwm
 # xrdb -load .Xresources
 # exec herbstluftwm
