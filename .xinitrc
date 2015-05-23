@@ -10,10 +10,6 @@ fi
 
 redshift &  # Prevent self from going blind
 
-# Also look for fonts in /usr/share/fonts/local (TODO: why?)
-xset +fp /usr/share/fonts/local
-xset fp rehash
-
 # Fix keyboard oddities
 # ... or, depending on your perpective, add them
 # TODO: Move these into the keymap so the console uses them too!
