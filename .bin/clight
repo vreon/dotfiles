@@ -188,8 +188,11 @@ def _payload_from_preset(preset):
 
 def light_get(args):
     for light in args.bridge.group(args.lights).lights:
-        _print_light(light.id, light.status())
+        status = light.status()
+        _print_light(light.id, status)
 
+        if args.exit:
+            sys.exit(0 if status['state']['on'] else 1)
 
 def list_status(args):
     lights = args.bridge.get_lights()
@@ -271,7 +274,8 @@ if __name__ == '__main__':
         return p
 
     cmd('get', light_get, help='show light status')\
-        .arg('-l', '--lights', type=light_selection, help='comma-separated ints or group name')
+        .arg('-l', '--lights', type=light_selection, help='comma-separated ints or group name')\
+        .arg('-e', '--exit', action='store_true', help='use first light status as exit code')
 
     cmd('on', light_on, help='turn light on')\
         .arg('-l', '--lights', type=light_selection, help='comma-separated ints or group name')\
