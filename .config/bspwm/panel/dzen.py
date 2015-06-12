@@ -22,6 +22,27 @@ BRIGHTBLUE = '#5F5FEE'
 BRIGHTMAGENTA = '#BB88DD'
 BRIGHTCYAN = '#4EB4FA'
 
+COLOR_BY_INDEX = [
+    BLACK,
+    RED,
+    GREEN,
+    YELLOW,
+    BLUE,
+    MAGENTA,
+    CYAN,
+    LIGHTGRAY,
+    DARKGRAY,
+    BRIGHTRED,
+    BRIGHTGREEN,
+    BRIGHTYELLOW,
+    BRIGHTBLUE,
+    BRIGHTMAGENTA,
+    BRIGHTCYAN,
+    WHITE
+]
+
+HOSTCOLOR = COLOR_BY_INDEX[int(os.environ.get('HOSTCOLOR', '5'))]
+
 FONT_CHAR_WIDTH = 8  # determined experimentally >_>
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -219,7 +240,7 @@ class GliderWidget(Widget):
 
     def render(self):
         icon = _color(_icon('glider'), WHITE)
-        return _bg_color(' %s ' % icon, MAGENTA)
+        return _bg_color(' %s ' % icon, HOSTCOLOR)
 
 
 class WorkspacesWidget(Widget):
@@ -227,9 +248,9 @@ class WorkspacesWidget(Widget):
     prefix = 'W'
 
     STATE_COLOR = {
-        'O': MAGENTA,
-        'F': MAGENTA,
-        'U': MAGENTA,
+        'O': HOSTCOLOR,
+        'F': HOSTCOLOR,
+        'U': HOSTCOLOR,
         'o': LIGHTGRAY,
         'f': DARKGRAY,
         'u': BRIGHTRED,
