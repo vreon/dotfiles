@@ -1,0 +1,6 @@
+#!/bin/bash
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+git reset .
+git checkout .
+git checkout master
+git branch -D "$BRANCH"

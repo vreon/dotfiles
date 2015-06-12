@@ -85,15 +85,18 @@ function whichpr {
 }
 
 # For git
-alias gl='git log --pretty=fancy --date=short --no-merges'
-alias gla='git log --pretty=fancy --date=short'
-alias gp='git pull'
-alias gs='git status -sb'
+alias gcm='git checkout master'
 alias gd='git diff'
 alias gds='git diff --staged'
 alias gfop='git fetch origin --prune'
-alias gspf='git stash show -p | git apply && git stash drop'
+alias gl='git log --pretty=fancy --date=short --no-merges'
+alias gla='git log --pretty=fancy --date=short'
+alias gls='git log --oneline --decorate --no-merges'
+alias gnvm='git reset . && git checkout . && git checkout master'
+alias gp='git pull'
 alias grmb='git branch --merged | grep -v master | xargs git branch -d'
+alias gs='git status -sb'
+alias gspf='git stash show -p | git apply && git stash drop'
 
 ###########################################################
 # Environment
