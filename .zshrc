@@ -85,6 +85,7 @@ function whichpr {
 }
 
 # For git
+alias gco='git checkout'
 alias gcm='git checkout master'
 alias gd='git diff'
 alias gds='git diff --staged'
