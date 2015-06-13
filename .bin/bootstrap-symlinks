@@ -6,25 +6,25 @@ ARCHIVE="/mnt/archive"
 mkdir -p $HOME/.ssh
 mkdir -p $HOME/.virtualenvs
 
-ln -s $ARCHIVE/audio $HOME/Audio
-ln -s $DOTFILES/.bin $HOME/.bin
-ln -s $DOTFILES/.config/user-dirs.dirs $HOME/.config/user-dirs.dirs
-ln -s $DOTFILES/.config/colorschemes $HOME/.config/colorschemes
-ln -s $DOTFILES/.config/herbstluftwm $HOME/.config/herbstluftwm
-ln -s $DOTFILES/.config/bspwm $HOME/.config/bspwm
-ln -s $DOTFILES/.config/sxhkd $HOME/.config/sxhkd
-ln -s $DOTFILES/.config/compton.conf $HOME/.config/compton.conf
-ln -s $DOTFILES/.config/mpd/mpd.conf $HOME/.config/mpd/mpd.conf
-ln -s $DOTFILES/.config/clight.yaml $HOME/.config/clight.yaml
-ln -s $DOTFILES/.fonts $HOME/.fonts
-ln -s $DOTFILES/.gitignore_global $HOME/.gitignore_global
-ln -s $DOTFILES/.password-store $HOME/.password-store
-ln -s $DOTFILES/.ssh/config $HOME/.ssh/config
-ln -s $DOTFILES/.tmux.conf $HOME/.tmux.conf
-ln -s $DOTFILES/.vim $HOME/.vim
-ln -s $DOTFILES/.vimrc $HOME/.vimrc
-ln -s $DOTFILES/.XCompose $HOME/.XCompose
-ln -s $DOTFILES/.Xresources $HOME/.Xresources
-ln -s $DOTFILES/.xinitrc $HOME/.xinitrc
-ln -s $DOTFILES/.zshrc $HOME/.zshrc
-ln -s $DOCUMENTS/Notes/TODO $HOME/TODO
+ln -sT $ARCHIVE/audio $HOME/Audio
+ln -sT $DOTFILES/.bin $HOME/.bin
+ln -sT $DOTFILES/.config/user-dirs.dirs $HOME/.config/user-dirs.dirs
+ln -sT $DOTFILES/.config/colorschemes $HOME/.config/colorschemes
+ln -sT $DOTFILES/.config/herbstluftwm $HOME/.config/herbstluftwm
+ln -sT $DOTFILES/.config/bspwm $HOME/.config/bspwm
+ln -sT $DOTFILES/.config/sxhkd $HOME/.config/sxhkd
+ln -sT $DOTFILES/.config/compton.conf $HOME/.config/compton.conf
+ln -sT $DOTFILES/.config/mpd/mpd.conf $HOME/.config/mpd/mpd.conf
+ln -sT $DOTFILES/.config/clight.yaml $HOME/.config/clight.yaml
+ln -sT $DOTFILES/.fonts $HOME/.fonts
+ln -sT $DOTFILES/.gitignore_global $HOME/.gitignore_global
+ln -sT $DOTFILES/.password-store $HOME/.password-store
+ln -sT $DOTFILES/.ssh/config $HOME/.ssh/config
+ln -sT $DOTFILES/.tmux.conf $HOME/.tmux.conf
+ln -sT $DOTFILES/.vim $HOME/.vim
+ln -sT $DOTFILES/.vimrc $HOME/.vimrc
+ln -sT $DOTFILES/.XCompose $HOME/.XCompose
+ln -sT $DOTFILES/.Xresources $HOME/.Xresources
+ln -sT $DOTFILES/.xinitrc $HOME/.xinitrc
+ln -sT $DOTFILES/.zshrc $HOME/.zshrc
+ln -sT $DOCUMENTS/Notes/TODO $HOME/TODO
