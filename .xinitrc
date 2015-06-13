@@ -12,8 +12,7 @@ redshift &  # Prevent self from going blind
 
 # Fix keyboard
 setxkbmap -option "compose:rwin"
-setxkbmap -option "caps:ctrl_modifier"
-xcape -e "Caps_Lock=Escape"
+setxkbmap -option "caps:swapescape"
 
 # xfce4
 # setxkbmap -option "altwin:swap_alt_win"

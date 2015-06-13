@@ -15,7 +15,6 @@ Dependencies:
 - sutils-git *
 - sxhkd-git *
 - unclutter +
-- xcape +
 - xfce4-notify +
 - xfce4-screenshooter +
 - xtitle-git *
