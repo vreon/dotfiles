@@ -35,6 +35,6 @@ scenes:
     twilight:
         - {hue: 261, sat: 0.74, bri: 0.67}
         - {hue: 292, sat: 0.58, bri: 0.58}
-    bright:
+    spring:
         - {hue: 313, sat: 0.48, bri: 1}
         - {hue: 86, sat: 0.52, bri: 1}
