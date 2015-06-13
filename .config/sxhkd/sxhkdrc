@@ -157,6 +157,7 @@ super + Escape ; w ; s
     notify-send -t 3000 "wallpaper saved" "$($HOME/.bin/splash_save)"
 
 super + Escape ; w ; g
+    notify-send -t 1000 "processing wallpaper..."; \
     notify-send -t 3000 "using saved wallpaper" "$($HOME/.bin/splash_random_saved)"
 
 ################################################################################
