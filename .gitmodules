@@ -66,3 +66,7 @@
 	path = .vim/bundle/webapi-vim
 	url = git@github.com:mattn/webapi-vim.git
 	ignore = dirty
+[submodule ".vim/bundle/ag.vim"]
+	path = .vim/bundle/ag.vim
+	url = git@github.com:rking/ag.vim.git
+	ignore = dirty
