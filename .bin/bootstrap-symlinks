@@ -16,7 +16,6 @@ ln -sT $DOTFILES/.config/sxhkd $HOME/.config/sxhkd
 ln -sT $DOTFILES/.config/compton.conf $HOME/.config/compton.conf
 ln -sT $DOTFILES/.config/mpd/mpd.conf $HOME/.config/mpd/mpd.conf
 ln -sT $DOTFILES/.config/clight.yaml $HOME/.config/clight.yaml
-ln -sT $DOTFILES/.fonts $HOME/.fonts
 ln -sT $DOTFILES/.gitignore_global $HOME/.gitignore_global
 ln -sT $DOTFILES/.password-store $HOME/.password-store
 ln -sT $DOTFILES/.ssh/config $HOME/.ssh/config
