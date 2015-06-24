@@ -58,8 +58,8 @@ super + ctrl + {1-9}
 	bspc window -r 0.{1-9}
 
 # Focus desktop, move window to desktop
-super + {_,shift + }{1-9,0}
-	bspc {desktop -f,window -d} ^{1-9,10}
+super + {_,shift + ,shift + ctrl + }{1-9,0}
+	bspc {desktop -f,window -d,desktop -s} ^{1-9,10}
 
 # Rotation (explicit)
 super + r ; {h,j,k,l} ; {9,2,1}
