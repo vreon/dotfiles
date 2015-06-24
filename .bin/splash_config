@@ -1,4 +1,0 @@
-#!/bin/sh
-DIR="$HOME/.config/wallpaper"
-ORIG="$DIR/orig"
-CURRENT="$DIR/current"

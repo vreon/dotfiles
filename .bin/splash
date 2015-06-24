@@ -1,0 +1,139 @@
+#!/bin/sh
+
+# Location of config directory for splash
+readonly DIR="$HOME/.config/wallpaper"
+
+# Location of storage for wallpapers
+readonly STORE="$DIR/store"
+
+# The currently selected wallpaper, without effects
+readonly ORIG="$DIR/orig"
+
+# The currently selected wallpaper, with effects
+readonly CURRENT="$DIR/current"
+
+function apply() {
+    feh --bg-fill "$CURRENT"
+}
+
+function save() {
+    local md5=($(md5sum "$ORIG"))
+    local saved="$STORE/$md5"
+    cp "$ORIG" "$saved"
+    exit 0
+}
+
+function pick() {
+    local selected=($(sxiv -N popimage -rtbo "$STORE"))
+
+    [ -n "$selected" ] || exit 0
+
+    rm "$ORIG"
+    cp "$selected" "$ORIG"
+    rm "$CURRENT"
+    cp "$ORIG" "$CURRENT"
+    apply
+    exit 0
+}
+
+function saved() {
+    local selected="$STORE/$(ls "$STORE" | grep -v -e "0000000" | shuf -n 1)"
+    rm "$ORIG"
+    cp "$selected" "$ORIG"
+    rm "$CURRENT"
+    cp "$ORIG" "$CURRENT"
+    apply
+    exit 0
+}
+
+function web() {
+    local url=$(curl -s "http://www.splashbase.co/api/v1/images/random?images_only=true" | jq -r ". | .large_url // .url")
+    curl -so "$ORIG" "$url"
+    rm "$CURRENT"
+    cp "$ORIG" "$CURRENT"
+    apply
+    exit 0
+}
+
+function effect_reset() {
+    cp "$ORIG" "$CURRENT"
+    apply
+    exit 0
+}
+
+function effect_duotone() {
+    mogrify -colorspace gray +sigmoidal-contrast 3,20% -fill "$(xcolor "$(hostcolor)")" -tint 50 "$CURRENT"
+    apply
+    exit 0
+}
+
+function effect_posterize() {
+    local threshold="$1"
+    threshold=${threshold:=50%}
+    mogrify -threshold "$threshold" -level -50% "$CURRENT"
+    apply
+    exit 0
+}
+
+function effect() {
+    local effect=$1
+    shift
+
+    case "$effect" in
+        duotone) effect_duotone "$@" ;;
+        posterize) effect_posterize "$@" ;;
+        reset) effect_reset "$@" ;;
+    esac
+
+    echo "Invalid effect" >&2
+    exit 1
+}
+
+function invalid() {
+    echo "Invalid option: -$OPTARG" >&2
+    usage
+    exit 1
+}
+
+function usage() {
+    echo "Usage: $(basename "$0") [-h] COMMAND"
+    echo "Manage wallpaper."
+    echo
+    echo "Commands:"
+    echo "  save    Save the current wallpaper"
+    echo "  pick    Interactively pick a wallpaper"
+    echo "  web     Select a wallpaper at random from the web"
+    echo "  saved   Select a wallpaper at random from saved wallpapers"
+    echo "  effect  Interactively pick an effect to apply to the current wallpaper"
+    echo
+    echo "Options: "
+    echo "  -h      Show this usage message and exit"
+}
+
+
+function main() {
+    while getopts ":h" opt; do
+        case "$opt" in
+            h) usage && exit 0 ;;
+            \?) invalid ;;
+        esac
+    done
+
+    shift $((OPTIND -1))
+
+    cmd=$1
+    shift
+
+    case "$cmd" in
+        save) save ;;
+        pick) pick ;;
+        web) web ;;
+        saved) saved ;;
+        effect) effect "$@" ;;
+        \?) invalid ;;
+    esac
+
+    usage >&2
+}
+
+main "$@"

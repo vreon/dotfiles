@@ -4,7 +4,7 @@
 
 Dependencies:
 
-  - bspwm-git [1]
+  - bspwm-git ~
   - compton-git *
   - dmenu-xft *
   - dzen2
@@ -16,6 +16,7 @@ Dependencies:
   - rxvt-unicode
   - sutils-git *
   - sxhkd-git *
+  - sxiv-git +~
   - unclutter +
   - xfce4-notify +
   - xfce4-screenshooter +
@@ -23,6 +24,5 @@ Dependencies:
   - zsh
 
 \* AUR package  
-\+ optional, but recommended
-
-[1] Patched version from https://github.com/vreon/pkgbuilds
+\+ optional, but recommended  
+~ patched version from https://github.com/vreon/pkgbuilds

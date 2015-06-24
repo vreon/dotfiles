@@ -1,6 +1,0 @@
-#!/bin/bash
-# Set the wallpaper to current
-
-. splash_config
-
-feh --bg-fill "$CURRENT"

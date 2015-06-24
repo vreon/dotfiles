@@ -161,16 +161,8 @@ super + {F7,F8,F9,shift+F8}
 ################################################################################
 # Wallpaper control
 
-super + Escape ; w ; r
-    notify-send -t 3000 "fetching wallpaper..."; \
-    notify-send -t 3000 "using random wallpaper" "$($HOME/.bin/splash_random)"
-
-super + Escape ; w ; s
-    notify-send -t 3000 "wallpaper saved" "$($HOME/.bin/splash_save)"
-
-super + Escape ; w ; g
-    notify-send -t 1000 "processing wallpaper..."; \
-    notify-send -t 3000 "using saved wallpaper" "$($HOME/.bin/splash_random_saved)"
+super + Escape ; w
+    $HOME/.bin/splash pick
 
 ################################################################################
 # Reload/exit
