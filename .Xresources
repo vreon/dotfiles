@@ -6,13 +6,12 @@ urxvt.letterSpace: -2
 urxvt.saveLines: 8192
 urxvt.depth: 32
 urxvt.scrollBar: false
-urxvt.perl-ext-common: url-select,clipboard,fullscreen,font-size
+urxvt.perl-ext-common: url-select,clipboard,font-size
 urxvt.url-select.launcher: google-chrome-unstable
 urxvt.url-select.underline: true
 urxvt.keysym.M-u: perl:url-select:select_next
 urxvt.keysym.M-c: perl:clipboard:copy
 urxvt.keysym.M-v: perl:clipboard:paste
-urxvt.keysym.F11: perl:fullscreen:switch
 urxvt.keysym.Control-equal: perl:font-size:increase
 urxvt.keysym.Control-minus: perl:font-size:decrease
 
