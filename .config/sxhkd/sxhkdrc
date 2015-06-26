@@ -82,28 +82,28 @@ super + r ; {l;k, l;l, l;j}
 # Gap and padding tweaks
 
 # Change window gap
-super + ctrl + {plus,minus}
+super + shift + {Prior,Next}
     bspc config -d focused window_gap $((`bspc config -d focused window_gap` {+ 5,- 5} ))
 
 # Restore original window gap
-super + ctrl + equal
+super + shift + Home
     bspc config -d focused window_gap 20
 
 # Change desktop padding
-super + plus
+super + Prior
     bspc config -d focused top_padding $((`bspc config -d focused bottom_padding` + 5 )); \
     bspc config -d focused left_padding $((`bspc config -d focused bottom_padding` + 5 )); \
     bspc config -d focused right_padding $((`bspc config -d focused bottom_padding` + 5 )); \
     bspc config -d focused bottom_padding $((`bspc config -d focused bottom_padding` + 5 ))
 
-super + minus
+super + Next
     bspc config -d focused top_padding $((`bspc config -d focused bottom_padding` - 5 )); \
     bspc config -d focused left_padding $((`bspc config -d focused bottom_padding` - 5 )); \
     bspc config -d focused right_padding $((`bspc config -d focused bottom_padding` - 5 )); \
     bspc config -d focused bottom_padding $((`bspc config -d focused bottom_padding` - 5 ))
 
 # Restore original desktop padding
-super + equal
+super + Home
     bspc config -d focused top_padding 0; \
     bspc config -d focused left_padding 0; \
     bspc config -d focused right_padding 0; \
