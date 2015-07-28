@@ -77,6 +77,7 @@ alias usage='du -h --max-depth=0 * | sort -hr'
 alias pyclean="find -regex '.*\.pyc\|.*__pycache__' -delete"
 alias docker-clean-images="docker images | grep '^<none>' | awk '{print \$3}' | xargs docker rmi"
 alias fig="docker-compose"
+alias dcr="docker-compose run --rm"
 alias cb="xclip -selection c"
 alias hc="herbstclient"
 alias thr="docker run -it --rm"
