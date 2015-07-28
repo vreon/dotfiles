@@ -3,8 +3,25 @@ wid=$1
 class=$2
 instance=$3
 
-title=$(xtitle $wid)
+get_xprop(){
+    local val=$(xprop -id $1 $2)
+
+    if [[ $val == *"not found"* ]]; then
+        val='n/a'
+    else
+        val=$(echo $val | sed 's/.*"\(.*\)".*/\1/')
+    fi
+
+    echo -n $val
+}
+
+title=$(get_xprop $wid WM_NAME)
+role=$(get_xprop $wid WM_WINDOW_ROLE)
 
 case "$title" in
     popterm) echo "floating=true" ;;
+esac
+
+case "$role" in
+    pop-up) echo "floating=true" ;;
 esac

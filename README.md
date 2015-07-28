@@ -20,7 +20,6 @@ Dependencies:
   - unclutter +
   - xfce4-notify +
   - xfce4-screenshooter +
-  - xtitle-git *
   - zsh
 
 \* AUR package  
