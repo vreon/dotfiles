@@ -67,6 +67,12 @@ function effect_duotone() {
     exit 0
 }
 
+function effect_lighten() {
+    mogrify -fill white -colorize 50% "$CURRENT"
+    apply
+    exit 0
+}
+
 function effect_posterize() {
     local threshold="$1"
     threshold=${threshold:=50%}
@@ -82,6 +88,7 @@ function effect() {
     case "$effect" in
         duotone) effect_duotone "$@" ;;
         posterize) effect_posterize "$@" ;;
+        lighten) effect_lighten "$@" ;;
         reset) effect_reset "$@" ;;
     esac
 
