@@ -241,7 +241,7 @@ class TemperatureWidget(Widget):
         self.update('0')
 
     def update(self, line):
-        self.width = (len(line) + 1) * FONT_CHAR_WIDTH + 8
+        self.width = (len(line) + 2) * FONT_CHAR_WIDTH + 8
         self.temperature = int(line)
 
     def render(self):
