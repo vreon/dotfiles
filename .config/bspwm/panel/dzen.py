@@ -233,6 +233,28 @@ class DiskUsageWidget(Widget):
         return _color('%s %s' % (_icon('hdd'), self.percentage), DARKGRAY)
 
 
+class TemperatureWidget(Widget):
+    """Display temperature of system components."""
+    def __init__(self, prefix, icon):
+        self.prefix = prefix
+        self.icon = icon
+        self.update('0')
+
+    def update(self, line):
+        self.width = (len(line) + 1) * FONT_CHAR_WIDTH + 8
+        self.temperature = int(line)
+
+    def render(self):
+        if self.temperature >= 70:
+            color = BRIGHTRED
+        elif self.temperature >= 60:
+            color = YELLOW
+        else:
+            color = DARKGRAY
+
+        return _color('%s %dC' % (_icon(self.icon), self.temperature), color)
+
+
 class GliderWidget(Widget):
     """Display a pretty glider icon."""
     def __init__(self):
@@ -393,6 +415,10 @@ def main():
         bar.add_widget(VPNWidget())
         bar.add_widget(separator)
         bar.add_widget(DiskUsageWidget())
+        bar.add_widget(separator)
+        bar.add_widget(TemperatureWidget('tC', 'cpu'))
+        bar.add_widget(separator)
+        bar.add_widget(TemperatureWidget('tG', 'fs_01'))
         bar.add_widget(separator)
         bar.add_widget(PacmanWidget())
         bar.add_widget(separator)

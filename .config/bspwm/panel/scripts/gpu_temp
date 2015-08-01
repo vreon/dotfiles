@@ -1,0 +1,6 @@
+#!/bin/sh
+
+while true; do
+    echo "tG$(nvidia-settings -q gpucoretemp -t | head -n1)"
+    sleep 15
+done

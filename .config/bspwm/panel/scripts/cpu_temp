@@ -1,0 +1,6 @@
+#!/bin/sh
+
+while true; do
+    echo "tC$(sensors -u coretemp-isa-0000 | grep -P 'temp\d+_input' | tr -d ' ' | cut -d ':' -f 2 | sort -rn | head -n1 | cut -d '.' -f 1)"
+    sleep 15
+done
