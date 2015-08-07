@@ -60,6 +60,17 @@ def _bg_color(str_, color):
 def _clickable(str_, button, cmd):
     return '^ca(%d,%s)%s^ca()' % (button, cmd, str_)
 
+def _threshold(str_, value, thresholds):
+    sorted_thresholds = sorted(
+        thresholds.items(),
+        key=lambda v: v[0],
+        reverse=True,
+    )
+    for target_value, color in sorted_thresholds:
+        if value >= target_value:
+            return _color(str_, color)
+    return str_
+
 class Bar(object):
     LEFT = 0
     RIGHT = 1
@@ -207,8 +218,11 @@ class PacmanWidget(Widget):
             self.width += (len(str(self.num_pacfiles)) + 1) * FONT_CHAR_WIDTH
 
     def render(self):
-        color = BRIGHTCYAN if self.num_updates else DARKGRAY
-        updates = _color('%s %s' % (_icon('pacman'), self.num_updates), color)
+        updates = _threshold(
+            '%s %s' % (_icon('pacman'), self.num_updates),
+            self.num_updates,
+            {0: DARKGRAY, 1: BRIGHTCYAN, 30: YELLOW}
+        )
         pacfiles = ''
 
         if self.num_pacfiles:
@@ -227,10 +241,14 @@ class DiskUsageWidget(Widget):
 
     def update(self, line):
         self.width = (len(line) + 1) * FONT_CHAR_WIDTH + 8
-        self.percentage = line
+        self.percentage = int(line[:-1])
 
     def render(self):
-        return _color('%s %s' % (_icon('hdd'), self.percentage), DARKGRAY)
+        return _threshold(
+            '%s %d%%' % (_icon('hdd'), self.percentage),
+            self.percentage,
+            {0: DARKGRAY, 60: YELLOW, 80: BRIGHTRED}
+        )
 
 
 class TemperatureWidget(Widget):
@@ -245,14 +263,11 @@ class TemperatureWidget(Widget):
         self.temperature = int(line)
 
     def render(self):
-        if self.temperature >= 70:
-            color = BRIGHTRED
-        elif self.temperature >= 60:
-            color = YELLOW
-        else:
-            color = DARKGRAY
-
-        return _color('%s %dC' % (_icon(self.icon), self.temperature), color)
+        return _threshold(
+            '%s %dC' % (_icon(self.icon), self.temperature),
+            self.temperature,
+            {0: DARKGRAY, 60: YELLOW, 70: BRIGHTRED}
+        )
 
 
 class GliderWidget(Widget):
