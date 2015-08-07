@@ -36,6 +36,13 @@ function share() {
     exit 0
 }
 
+function log() {
+    pushd ${ON_DIR} > /dev/null
+    tail -n +1 * | ${PAGER}
+    popd > /dev/null
+    exit 0
+}
+
 function invalid() {
     echo "Invalid option: -$OPTARG" >&2
     usage
@@ -44,22 +51,24 @@ function invalid() {
 
 function usage() {
     echo "yest: track and share what you've been up to"
-    echo "Usage: yest [-htsep]"
+    echo "Usage: yest [-ehlpst]"
     echo "Options: "
-    echo "  -h         Show this usage message"
-    echo "  -t <text>  Add <text> to today's projects"
-    echo "  -s         Review and share the most recent project log"
     echo "  -e         Edit the most recent daily log in \$EDITOR"
+    echo "  -h         Show this usage message"
+    echo "  -l         Show all daily logs in \$PAGER"
     echo "  -p         Preview the most recent daily log in \$PAGER"
+    echo "  -s         Review and share the most recent project log"
+    echo "  -t <text>  Add <text> to today's projects"
 }
 
-while getopts ":pehst:" opt; do
+while getopts ":ehlpst:" opt; do
     case "$opt" in
-    h) usage && exit 0 ;;
-    t) track "$OPTARG" ;;
-    s) share ;;
     e) edit ;;
+    h) usage && exit 0 ;;
+    l) log ;;
     p) preview ;;
+    s) share ;;
+    t) track "$OPTARG" ;;
     \?) invalid ;;
     esac
 done
