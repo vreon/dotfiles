@@ -2,5 +2,5 @@
 
 while true; do
     echo "U$(checkupdates | wc -l) $(pacfiles | wc -l)"
-    sleep 2h
+    sleepid 2h $1
 done

@@ -2,5 +2,5 @@
 
 while true; do
     echo "V$(systemctl list-units --no-legend "openvpn*" | cut -d "@" -f 2 | cut -d "." -f 1 | paste -sd "," -)"
-    sleep 1m
+    sleepid 1m $1
 done

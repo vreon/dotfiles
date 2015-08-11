@@ -3,6 +3,6 @@
 if command -v nvidia-settings >/dev/null 2>&1; then
     while true; do
         echo "tG$(nvidia-settings -q gpucoretemp -t | head -n1)"
-        sleep 15
+        sleepid 15 $1
     done
 fi

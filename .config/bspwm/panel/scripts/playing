@@ -2,7 +2,7 @@
 
 while true; do
     if ! pidof mpd > /dev/null; then
-        sleep 3m
+        sleepid 3m $1
     else
         echo "M$(mpc current -f "[%artist% - ][%title%|%file%]")"
         mpc idle > /dev/null

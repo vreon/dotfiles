@@ -1,0 +1,7 @@
+#!/bin/bash
+# Sleep, but echo your PID to a file so you can be easily woken
+
+sleep $1 &
+echo $! > $2
+wait
+rm $2
