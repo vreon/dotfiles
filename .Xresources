@@ -2,6 +2,7 @@
 
 urxvt.font: xft:Fantasque Sans Mono:size=13
 urxvt.letterSpace: -2
+urxvt.internalBorder: 6
 
 urxvt.saveLines: 8192
 urxvt.depth: 32
