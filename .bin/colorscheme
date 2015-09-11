@@ -1,0 +1,4 @@
+#!/bin/bash
+rm -f $HOME/.config/colorschemes/current
+ln -s $HOME/.config/colorschemes/$1 $HOME/.config/colorschemes/current
+xrdb $HOME/.Xresources

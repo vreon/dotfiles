@@ -1,4 +1,4 @@
-#include ".config/colorschemes/molokai"
+#include ".config/colorschemes/current"
 
 urxvt.font: xft:Fantasque Sans Mono:size=13
 urxvt.letterSpace: -2
