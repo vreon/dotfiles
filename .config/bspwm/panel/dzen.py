@@ -1,47 +1,32 @@
 #!/usr/bin/env python
 
+import argparse
 import io
 import os
 import sys
 from contextlib import contextmanager
 
-FG = WHITE = '#D0D0D0'
-BG = BLACK = '#101010'
-RED = '#960050'
-GREEN = '#66AA11'
-YELLOW = '#C47F2C'
-BLUE = '#30309B'
-MAGENTA = '#7E40A5'
-CYAN = '#3579A8'
-LIGHTGRAY = '#9999AA'
-DARKGRAY = '#303030'
-BRIGHTRED = '#FF0090'
-BRIGHTGREEN = '#80FF00'
-BRIGHTYELLOW = '#FFBA68'
-BRIGHTBLUE = '#5F5FEE'
-BRIGHTMAGENTA = '#BB88DD'
-BRIGHTCYAN = '#4EB4FA'
+DEFAULT_COLORS = (
+    '#101010 #960050 #66AA11 #C47F2C #30309B #7E40A5 #3579A8 #9999AA '
+    '#303030 #FF0090 #08FF00 #FFBA68 #5F5FEE #BB88DD #4EB4FA #D0D0D0'
+)
 
-COLOR_BY_INDEX = [
-    BLACK,
-    RED,
-    GREEN,
-    YELLOW,
-    BLUE,
-    MAGENTA,
-    CYAN,
-    LIGHTGRAY,
-    DARKGRAY,
-    BRIGHTRED,
-    BRIGHTGREEN,
-    BRIGHTYELLOW,
-    BRIGHTBLUE,
-    BRIGHTMAGENTA,
-    BRIGHTCYAN,
-    WHITE
-]
-
-HOSTCOLOR = COLOR_BY_INDEX[int(os.environ.get('HOSTCOLOR', '5'))]
+BG = BLACK = 0
+RED = 1
+GREEN = 2
+YELLOW = 3
+BLUE = 4
+MAGENTA = 5
+CYAN = 6
+LIGHTGRAY = 7
+DARKGRAY = 8
+BRIGHTRED = 9
+BRIGHTGREEN = 10
+BRIGHTYELLOW = 11
+BRIGHTBLUE = 12
+BRIGHTMAGENTA = 13
+BRIGHTCYAN = 14
+FG = WHITE = 15
 
 FONT_CHAR_WIDTH = 8  # determined experimentally >_>
 
@@ -75,7 +60,7 @@ class Bar(object):
     LEFT = 0
     RIGHT = 1
 
-    def __init__(self, widgets=[]):
+    def __init__(self):
         self.widgets = {
             self.LEFT: [],
             self.RIGHT: [],
@@ -83,9 +68,8 @@ class Bar(object):
 
         self._prefix_to_widgets = {}
         self._default_side = Bar.LEFT
-
-        for widget, side in widgets:
-            self.add_widget(widget, side)
+        self.colors = []
+        self.accent = 15
 
     @contextmanager
     def select_side(self, side):
@@ -100,6 +84,7 @@ class Bar(object):
         if widget.prefix:
             self._prefix_to_widgets.setdefault(widget.prefix, []).append(widget)
         self.widgets[side].append(widget)
+        widget.bar = self
 
     def update(self, line):
         line = line.strip()
@@ -134,6 +119,7 @@ class Widget(object):
 
     def __init__(self):
         self.width = 0
+        self.bar = None
 
     def update(self, line):
         pass
@@ -194,11 +180,11 @@ class MusicWidget(Widget):
 
     def render(self):
         space = ''
-        color = DARKGRAY
+        color = self.bar.colors[DARKGRAY]
 
         if self.text:
             space = ' '
-            color = MAGENTA
+            color = self.bar.colors[MAGENTA]
 
         return _color(_icon('phones') + space + self.text, color)
 
@@ -221,13 +207,13 @@ class PacmanWidget(Widget):
         updates = _threshold(
             '%s %s' % (_icon('pacman'), self.num_updates),
             self.num_updates,
-            {0: DARKGRAY, 1: BRIGHTCYAN, 30: YELLOW}
+            {0: self.bar.colors[DARKGRAY], 1: self.bar.colors[BRIGHTCYAN], 30: self.bar.colors[YELLOW]}
         )
         pacfiles = ''
 
         if self.num_pacfiles:
-            pacfiles = _color('/', DARKGRAY) + \
-                _color(str(self.num_pacfiles), BRIGHTRED)
+            pacfiles = _color('/', self.bar.colors[DARKGRAY]) + \
+                _color(str(self.num_pacfiles), self.bar.colors[BRIGHTRED])
 
         return updates + pacfiles
 
@@ -247,7 +233,7 @@ class DiskUsageWidget(Widget):
         return _threshold(
             '%s %d%%' % (_icon('hdd'), self.percentage),
             self.percentage,
-            {0: DARKGRAY, 60: YELLOW, 80: BRIGHTRED}
+            {0: self.bar.colors[DARKGRAY], 60: self.bar.colors[YELLOW], 80: self.bar.colors[BRIGHTRED]}
         )
 
 
@@ -266,7 +252,7 @@ class TemperatureWidget(Widget):
         return _threshold(
             '%s %dC' % (_icon(self.icon), self.temperature),
             self.temperature,
-            {0: DARKGRAY, 60: YELLOW, 70: BRIGHTRED}
+            {0: self.bar.colors[DARKGRAY], 60: self.bar.colors[YELLOW], 70: self.bar.colors[BRIGHTRED]}
         )
 
 
@@ -277,30 +263,29 @@ class GliderWidget(Widget):
 
     def render(self):
         icon = _color(_icon('glider'), WHITE)
-        return _bg_color(' %s ' % icon, HOSTCOLOR)
+        return _bg_color(' %s ' % icon, self.bar.colors[self.bar.accent])
 
 
 class WorkspacesWidget(Widget):
     """Display bspwm workspaces."""
     prefix = 'W'
 
-    STATE_COLOR = {
-        'O': HOSTCOLOR,
-        'F': HOSTCOLOR,
-        'U': HOSTCOLOR,
-        'o': LIGHTGRAY,
-        'f': DARKGRAY,
-        'u': BRIGHTRED,
-    }
-
     def __init__(self):
         self.desktops = []
         self.width = 0
 
-    @classmethod
-    def _render_desktop(cls, name, state):
+    def _render_desktop(self, name, state):
+        STATE_COLOR = {
+            'O': self.bar.colors[self.bar.accent],
+            'F': self.bar.colors[self.bar.accent],
+            'U': self.bar.colors[self.bar.accent],
+            'o': self.bar.colors[LIGHTGRAY],
+            'f': self.bar.colors[DARKGRAY],
+            'u': self.bar.colors[BRIGHTRED],
+        }
+
         return _clickable(
-            _color(_icon('big/square_workspace'), cls.STATE_COLOR[state]),
+            _color(_icon('big/square_workspace'), STATE_COLOR[state]),
             1, 'bspc desktop -f %s' % name
         )
 
@@ -347,7 +332,7 @@ class LayoutWidget(Widget):
             'M': 'big/square_monocle',
             '?': 'big/square_tiled',
         }[self.layout]
-        color = DARKGRAY if self.layout == 'T' else LIGHTGRAY
+        color = self.bar.colors[DARKGRAY] if self.layout == 'T' else self.bar.colors[LIGHTGRAY]
         return _clickable(
             _color(_icon(icon_name), color),
             1, 'bspc desktop -l next'
@@ -373,7 +358,7 @@ class FloatingWidget(Widget):
             True: 'big/square_floating',
             False: 'big/square_monocle',
         }[self.floating]
-        color = LIGHTGRAY if self.floating else DARKGRAY
+        color = self.bar.colors[LIGHTGRAY] if self.floating else self.bar.colors[DARKGRAY]
         return _clickable(
             _color(_icon(icon_name), color),
             1, 'bspc desktop -t floating'
@@ -400,18 +385,20 @@ class VPNWidget(Widget):
     def render(self):
         if self.networks:
             return '  '.join([
-                _color('%s %s' % (_icon('net_wired'), net), BRIGHTGREEN)
+                _color('%s %s' % (_icon('net_wired'), net), self.bar.colors[BRIGHTGREEN])
                 for net in self.networks
             ])
         else:
-            return _color(_icon('net_wired'), DARKGRAY)
+            return _color(_icon('net_wired'), self.bar.colors[DARKGRAY])
 
 
-def main():
+def main(args):
     space = TextWidget(' ')
     separator = TextWidget('  ')
 
     bar = Bar()
+    bar.colors = args.colors.split()
+    bar.accent = args.accent
 
     with bar.select_side(Bar.LEFT):
         bar.add_widget(space)
@@ -422,7 +409,7 @@ def main():
         bar.add_widget(LayoutWidget())
         bar.add_widget(FloatingWidget())
         bar.add_widget(space)
-        bar.add_widget(EchoWidget('T', DARKGRAY, max_length=60))
+        bar.add_widget(EchoWidget('T', bar.colors[DARKGRAY], max_length=60))
 
     with bar.select_side(Bar.RIGHT):
         bar.add_widget(MusicWidget(max_length=60))
@@ -437,7 +424,7 @@ def main():
         bar.add_widget(separator)
         bar.add_widget(PacmanWidget())
         bar.add_widget(separator)
-        bar.add_widget(EchoWidget('S', LIGHTGRAY, icon='clock'))
+        bar.add_widget(EchoWidget('S', bar.colors[LIGHTGRAY], icon='clock'))
         bar.add_widget(space)
 
     for line in io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8'):
@@ -447,4 +434,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-c', '--colors', type=str, default=DEFAULT_COLORS)
+    parser.add_argument('-a', '--accent', type=int, default=15)
+    main(parser.parse_args())
