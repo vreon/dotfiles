@@ -24,6 +24,7 @@ setxkbmap -option "caps:swapescape"
 
 # bspwm
 export PATH="${PATH}:~/.bin"
+export GTK_IM_MODULE="xim"
 xrdb -load .Xresources
 xsetroot -cursor_name left_ptr
 sh ~/.fehbg &
