@@ -157,9 +157,15 @@ XF86Launch6
 XF86Audio{Prev,Play,Next}
     mpc -q {prev,toggle,next}
 
+XF86Audio{Lower,Raise}Volume
+    amixer set Master 2%{-,+}
+
 # why yes, I am lazy
 super + {F7,F8,F9,shift+F8}
     mpc -q {prev,toggle,next,stop}
+
+super + {F11,F12}
+    amixer set Master 2%{-,+}
 
 ################################################################################
 # Wallpaper control
