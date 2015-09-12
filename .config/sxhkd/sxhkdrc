@@ -177,7 +177,12 @@ super + Escape ; w
 # Reload/exit
 
 super + shift + q
+    pkill -x panel; \
 	bspc quit
+
+super + Escape ; p
+	pkill -x panel; $HOME/.config/bspwm/panel/panel & disown; \
+    notify-send -t 3000 "panel" "configuration reloaded"
 
 super + Escape ; s
 	pkill -USR1 -x sxhkd; \
