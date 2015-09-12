@@ -11,7 +11,7 @@ filetype indent off
 " Yes, NerdCommenter
 filetype plugin on
 
-colorscheme molokai
+colorscheme malachite
 syntax on
 
 " au BufRead,BufNewFile TODO,*.TODO,*.todo set filetype=todo
