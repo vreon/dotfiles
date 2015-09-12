@@ -78,6 +78,8 @@ noremap <Right> <NOP>
 " map <Leader>cc va{Jhx
 " map <Leader>ce V:!csstidy - --silent=true<CR>f{vi{>
 
+let g:netrw_banner = 0
+
 " gist.vim: List private gists
 let g:gist_show_privates = 1
 
