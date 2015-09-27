@@ -420,7 +420,7 @@ def main(args):
         bar.add_widget(separator)
         bar.add_widget(TemperatureWidget('tC', 'cpu'))
         bar.add_widget(separator)
-        bar.add_widget(TemperatureWidget('tG', 'fs_01'))
+        bar.add_widget(TemperatureWidget('tG', 'gpu'))
         bar.add_widget(separator)
         bar.add_widget(PacmanWidget())
         bar.add_widget(separator)
