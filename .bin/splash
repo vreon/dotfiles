@@ -16,10 +16,15 @@ function apply() {
     feh --bg-fill "$CURRENT"
 }
 
-function save() {
-    local md5=($(md5sum "$ORIG"))
+function store(){
+    local md5=($(md5sum "$1"))
     local saved="$STORE/$md5"
-    cp "$ORIG" "$saved"
+    cp "$1" "$saved"
+    exit 0
+}
+
+function save() {
+    store "$ORIG"
     exit 0
 }
 
@@ -108,6 +113,7 @@ function usage() {
     echo
     echo "Commands:"
     echo "  save    Save the current wallpaper"
+    echo "  store   Add the named wallpaper to storage"
     echo "  pick    Interactively pick a wallpaper"
     echo "  web     Select a wallpaper at random from the web"
     echo "  saved   Select a wallpaper at random from saved wallpapers"
@@ -133,6 +139,7 @@ function main() {
 
     case "$cmd" in
         save) save ;;
+        store) store "$@" ;;
         pick) pick ;;
         web) web ;;
         saved) saved ;;
