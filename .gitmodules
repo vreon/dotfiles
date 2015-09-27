@@ -66,3 +66,7 @@
 	path = .vim/bundle/ag.vim
 	url = git@github.com:rking/ag.vim.git
 	ignore = dirty
+[submodule ".vim/bundle/goyo.vim"]
+	path = .vim/bundle/goyo.vim
+	url = git@github.com:junegunn/goyo.vim.git
+	ignore = dirty

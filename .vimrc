@@ -94,6 +94,9 @@ nmap SS  <Plug>YSsurround
 nnoremap <c-h> :SidewaysLeft<cr>
 nnoremap <c-l> :SidewaysRight<cr>
 
+" goyo.vim: gray is more subtle than black
+let g:goyo_bg = 8
+
 " Don't open man pages, please
 nmap K k
 
@@ -112,3 +115,4 @@ endfunction
 let mapleader=","
 map <Leader>n :noh<CR>
 map <Leader>l :call ToggleColorColumn()<CR>
+map <Leader>g :Goyo<CR>
