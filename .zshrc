@@ -111,6 +111,12 @@ export PATH=${PATH}:~/.bin                                # Local bins
 export PATH=${PATH}:~/.gem/ruby/2.0.0/bin                 # Ruby gems
 export PATH=${PATH}:/opt/android-sdk/platform-tools       # android
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib  # rust
+export CLOUDSDK_PYTHON=$(which python2)                   # gcloud
+
+if [ -d "$HOME/.gcloud" ]; then
+    source ~/.gcloud/google-cloud-sdk/completion.zsh.inc
+    source ~/.gcloud/google-cloud-sdk/path.zsh.inc
+fi
 
 ###########################################################
 # Prompt
