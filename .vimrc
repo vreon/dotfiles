@@ -56,9 +56,7 @@ set listchars=tab:>-,trail:-
 set backspace=indent,eol,start
 
 " Disable incredibly annoying automatic comment leader insertion
-" TODO: This doesn't fricking work
-set formatoptions-=r
-set formatoptions-=o
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Disable obnoxious bold/underlining when writing HTML
 let html_no_rendering=1
