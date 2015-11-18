@@ -28,6 +28,20 @@ function save() {
     exit 0
 }
 
+function sync() {
+    local host=$1
+
+    if [ -z "$host" ]; then
+        >&2 echo 'error: sync with which host?'
+        exit 1
+    fi
+
+    rsync -azhu --progress "${STORE}/" "${host}:${STORE}/"
+    rsync -azhu --progress "${host}:${STORE}/" "${STORE}/"
+
+    exit 0
+}
+
 function pick() {
     local selected=($(sxiv -N popimage -rtbo "$STORE"))
 
@@ -114,6 +128,7 @@ function usage() {
     echo "Commands:"
     echo "  save    Save the current wallpaper"
     echo "  store   Add the named wallpaper to storage"
+    echo "  sync    Synchronize wallpaper storage with another host's storage"
     echo "  pick    Interactively pick a wallpaper"
     echo "  web     Select a wallpaper at random from the web"
     echo "  saved   Select a wallpaper at random from saved wallpapers"
@@ -140,6 +155,7 @@ function main() {
     case "$cmd" in
         save) save ;;
         store) store "$@" ;;
+        sync) sync "$@" ;;
         pick) pick ;;
         web) web ;;
         saved) saved ;;
