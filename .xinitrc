@@ -18,10 +18,6 @@ setxkbmap -option "caps:swapescape"
 # setxkbmap -option "altwin:swap_alt_win"
 # exec startxfce4
 
-# herbstluftwm
-# xrdb -load .Xresources
-# exec herbstluftwm
-
 # bspwm
 export PATH="${PATH}:~/.bin"
 export GTK_IM_MODULE="xim"

@@ -10,7 +10,6 @@ ln -sT $ARCHIVE/audio $HOME/Audio
 ln -sT $DOTFILES/.bin $HOME/.bin
 ln -sT $DOTFILES/.config/user-dirs.dirs $HOME/.config/user-dirs.dirs
 ln -sT $DOTFILES/.config/colorschemes $HOME/.config/colorschemes
-ln -sT $DOTFILES/.config/herbstluftwm $HOME/.config/herbstluftwm
 ln -sT $DOTFILES/.config/bspwm $HOME/.config/bspwm
 ln -sT $DOTFILES/.config/sxhkd $HOME/.config/sxhkd
 ln -sT $DOTFILES/.config/compton.conf $HOME/.config/compton.conf

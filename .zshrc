@@ -79,7 +79,6 @@ alias docker-clean-images="docker images | grep '^<none>' | awk '{print \$3}' | 
 alias fig="docker-compose"
 alias dcr="docker-compose run --rm"
 alias cb="xclip -selection c"
-alias hc="herbstclient"
 alias thr="docker run -it --rm"
 function whichpr {
     git log $1..master --ancestry-path --merges --oneline | tail -n 1
