@@ -1,6 +1,6 @@
 #include ".config/colorschemes/current"
 
-urxvt.font: xft:Fantasque Sans Mono:size=13
+urxvt.font: xft:PragmataPro:size=11
 urxvt.letterSpace: -2
 urxvt.internalBorder: 6
 

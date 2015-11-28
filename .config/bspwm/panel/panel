@@ -20,6 +20,6 @@ for widget in updates disk playing vpn cpu_temp gpu_temp; do
     $PANEL_HOME/scripts/$widget $PANEL_SLEEPERS/$widget.pid > "$PANEL_FIFO" &
 done
 
-cat "$PANEL_FIFO" | $PANEL_HOME/dzen.py -a "$(hostcolor)" -c "$(xcolor)" | dzen2 -ta l -w 1920 -h 20 -dock -fg "$(xcolor 15)" -bg "$(xcolor 0)" -fn "Fantasque Sans Mono-12px" -e "" &
+cat "$PANEL_FIFO" | $PANEL_HOME/dzen.py -a "$(hostcolor)" -c "$(xcolor)" | dzen2 -ta l -w 1920 -h 20 -dock -fg "$(xcolor 15)" -bg "$(xcolor 0)" -fn "PragmataPro-11px" -e "" &
 
 wait
