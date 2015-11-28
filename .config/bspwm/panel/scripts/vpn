@@ -1,6 +1,6 @@
 #!/bin/sh
 
 while true; do
-    echo "V$(systemctl list-units --no-legend | grep openvpn@ | cut -d "@" -f 2 | cut -d "." -f 1 | paste -sd "," -)"
+    echo "V$(systemctl list-units --no-legend | grep openvpn@ | grep active | cut -d "@" -f 2 | cut -d "." -f 1 | paste -sd "," -)"
     sleepid 1m $1
 done
