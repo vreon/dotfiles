@@ -134,7 +134,7 @@ super + shift + Return
     urxvtc -title popterm -geometry 80x2 -fn "xft:PragmataPro:size=20"
 
 super + ctrl + Return
-    urxvtc -bg "[70]$($HOME/.bin/xcolor 0)"
+    urxvtc -bg "[70]$($HOME/.bin/xrq colorscheme.color0)"
 
 super + n
     $HOME/.bin/dmenu_custom

@@ -1,0 +1,48 @@
+#!/usr/bin/env python2
+"""
+Grab an X resource's value by name.
+"""
+import argparse
+from fnmatch import fnmatch
+import subprocess
+import sys
+
+def get_resources():
+    return {
+        resource: value
+        for resource, _, value in
+        [
+            [item.strip() for item in line.partition(':')]
+            for line in subprocess.check_output(['xrdb', '-query']).split('\n')
+            if line
+        ]
+    }
+
+def main(args):
+    resources = get_resources()
+    printed_something = False
+
+    for name in args.name:
+        for resource, value in resources.items():
+            if fnmatch(name, resource):
+                if printed_something:
+                    sys.stdout.write(args.separator)
+                sys.stdout.write(value)
+                printed_something = True
+
+    if printed_something:
+        sys.stdout.write('\n')
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        'name', type=str, nargs='+',
+        help='a resource name, like "urxvt.color1"'
+    )
+    parser.add_argument(
+        '-1', '--one-line', action='store_const', dest='separator',
+        const=' ', default='\n',
+        help='separate output with spaces rather than newlines'
+    )
+    main(parser.parse_args())

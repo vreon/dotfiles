@@ -1,6 +1,6 @@
 #!/bin/bash
 
-colors=($(xcolor))
+colors=($(xrq -1 colorscheme.color{0..15}))
 primary=$(hostcolor)
 
 bspc config border_width        2
