@@ -1,6 +1,6 @@
 #!/bin/sh
 case "$(hostname)" in
-    chenjesu) color=5 ;;
+    chenjesu) color=10 ;;
     kvothe) color=10 ;;
     *) color=7 ;;
 esac
