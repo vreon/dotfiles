@@ -77,19 +77,16 @@ function web() {
 function effect_reset() {
     cp "$ORIG" "$CURRENT"
     apply
-    exit 0
 }
 
 function effect_duotone() {
     mogrify -colorspace gray +sigmoidal-contrast 3,20% -fill "$(xrq colorscheme.color$(hostcolor))" -tint 50 "$CURRENT"
     apply
-    exit 0
 }
 
 function effect_lighten() {
     mogrify -fill white -colorize 50% "$CURRENT"
     apply
-    exit 0
 }
 
 function effect_posterize() {
@@ -97,22 +94,27 @@ function effect_posterize() {
     threshold=${threshold:=50%}
     mogrify -threshold "$threshold" -level -50% "$CURRENT"
     apply
-    exit 0
 }
 
 function effect() {
-    local effect=$1
-    shift
+    while true; do
+        local effect=$1
+        shift
 
-    case "$effect" in
-        duotone) effect_duotone "$@" ;;
-        posterize) effect_posterize "$@" ;;
-        lighten) effect_lighten "$@" ;;
-        reset) effect_reset "$@" ;;
-    esac
+        if [[ -z "$effect" ]]; then
+            break
+        fi
 
-    echo "Invalid effect" >&2
-    exit 1
+        case "$effect" in
+            duotone) effect_duotone "$@" ;;
+            posterize) effect_posterize "$@" ;;
+            lighten) effect_lighten "$@" ;;
+            reset) effect_reset "$@" ;;
+            *) >&2 echo "Invalid effect: $effect"; exit 1 ;;
+        esac
+    done
+
+    exit 0
 }
 
 function invalid() {
