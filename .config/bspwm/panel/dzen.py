@@ -184,7 +184,7 @@ class MusicWidget(Widget):
 
         if self.text:
             space = ' '
-            color = self.bar.colors[MAGENTA]
+            color = self.bar.colors[self.bar.accent]
 
         return _color(_icon('phones') + space + self.text, color)
 
