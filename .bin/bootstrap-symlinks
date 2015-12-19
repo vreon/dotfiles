@@ -21,6 +21,8 @@ ln -sT $DOTFILES/.ssh/config $HOME/.ssh/config
 ln -sT $DOTFILES/.tmux.conf $HOME/.tmux.conf
 ln -sT $DOTFILES/.vim $HOME/.vim
 ln -sT $DOTFILES/.vimrc $HOME/.vimrc
+ln -sT $DOTFILES/.vim $HOME/.config/nvim
+ln -sT $DOTFILES/.vimrc $HOME/.config/nvim/init.vim
 ln -sT $DOTFILES/.XCompose $HOME/.XCompose
 ln -sT $DOTFILES/.Xresources $HOME/.Xresources
 ln -sT $DOTFILES/.xinitrc $HOME/.xinitrc
