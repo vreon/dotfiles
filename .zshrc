@@ -68,7 +68,8 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-# For common actions
+# Shortcuts and common actions
+alias vim='nvim'
 alias sys='sudo systemctl'
 alias wk='workon'
 alias bp='/usr/bin/env python -m bpython.cli'
@@ -102,7 +103,7 @@ alias gspf='git stash show -p | git apply && git stash drop'
 ###########################################################
 # Environment
 
-export EDITOR=/usr/bin/vim
+export EDITOR=/usr/bin/nvim
 export PROJECT_HOME=$HOME/Projects
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 
