@@ -126,3 +126,8 @@ if has('nvim')
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
 endif
+
+autocmd FileType go nmap <Leader>r <Plug>(go-run)
+autocmd FileType go nmap <Leader>m <Plug>(go-metalinter)
+
+let g:go_fmt_command="goimports"
