@@ -1,0 +1,3 @@
+#!/bin/bash
+sudo rm /etc/pacman.d/mirrorlist.pacnew
+sudo reflector --country='United States' --sort rate --save /etc/pacman.d/mirrorlist
