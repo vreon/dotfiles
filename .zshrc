@@ -65,21 +65,14 @@ fi
 # Colorize all the things
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
 
 # Shortcuts and common actions
 alias vim='nvim'
 alias sys='sudo systemctl'
 alias wk='workon'
-alias bp='/usr/bin/env python -m bpython.cli'
-alias bp2='/usr/bin/env python2 -m bpython.cli'
 alias usage='du -h --max-depth=0 * | sort -hr'
 alias pyclean="find -regex '.*\.pyc\|.*__pycache__' -delete"
-alias docker-clean-images="docker images | grep '^<none>' | awk '{print \$3}' | xargs docker rmi"
-alias fig="docker-compose"
 alias dcr="docker-compose run --rm"
-alias cb="xclip -selection c"
 alias thr="docker run -it --rm"
 function whichpr {
     git log $1..master --ancestry-path --merges --oneline | tail -n 1
@@ -93,7 +86,6 @@ alias gds='git diff --staged'
 alias gfop='git fetch origin --prune'
 alias gl='git log --pretty=fancy --date=short --no-merges'
 alias gla='git log --pretty=fancy --date=short'
-alias gls='git log --oneline --decorate --no-merges'
 alias gnvm='git reset . && git checkout . && git checkout master'
 alias gp='git pull'
 alias grmb='git branch --merged | grep -v master | xargs git branch -d'
