@@ -98,6 +98,7 @@ alias gspf='git stash show -p | git apply && git stash drop'
 export EDITOR=/usr/bin/nvim
 export PROJECT_HOME=$HOME/Projects
 export PYTHONSTARTUP=$HOME/.pythonrc.py
+export NVIM_LISTEN_ADDRESS=/tmp/nvim
 
 export PATH=${PATH}:~/.bin                                # Local bins
 export PATH=${PATH}:~/.gem/ruby/2.0.0/bin                 # Ruby gems
