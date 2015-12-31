@@ -37,6 +37,8 @@ set hlsearch
 set showcmd
 set noswapfile
 set nojoinspaces
+set noincsearch
+set laststatus=1
 
 set tabstop=4
 set shiftwidth=4
