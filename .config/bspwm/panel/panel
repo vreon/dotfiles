@@ -12,7 +12,7 @@ trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
 
 bspc config top_padding $PANEL_HEIGHT
 
-bspc control --subscribe > "$PANEL_FIFO" &
+bspc subscribe > "$PANEL_FIFO" &
 xtitle -sf "T%s" > "$PANEL_FIFO" &
 clock -sf "S%Y-%m-%d %-I:%M%P" > "$PANEL_FIFO" &
 

@@ -19,9 +19,9 @@ title=$(get_xprop $wid WM_NAME)
 role=$(get_xprop $wid WM_WINDOW_ROLE)
 
 case "$title" in
-    popterm) echo "floating=true" ;;
+    popterm) echo "state=floating" ;;
 esac
 
 case "$role" in
-    pop-up) echo "floating=true" ;;
+    pop-up) echo "state=floating" ;;
 esac

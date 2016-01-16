@@ -339,32 +339,6 @@ class LayoutWidget(Widget):
         )
 
 
-class FloatingWidget(Widget):
-    """Display bspwm floating flag."""
-    prefix = 'W'
-
-    def __init__(self):
-        self.width = 13
-        self.floating = False
-
-    def update(self, line):
-        bits = line.split(':')
-        for bit in bits:
-            if bit.startswith('4'):
-                self.floating = bit[1] == 'y'
-
-    def render(self):
-        icon_name = {
-            True: 'big/square_floating',
-            False: 'big/square_monocle',
-        }[self.floating]
-        color = self.bar.colors[LIGHTGRAY] if self.floating else self.bar.colors[DARKGRAY]
-        return _clickable(
-            _color(_icon(icon_name), color),
-            1, 'bspc desktop -t floating'
-        )
-
-
 class VPNWidget(Widget):
     """Display active VPN connections."""
     prefix = 'V'
@@ -407,7 +381,6 @@ def main(args):
         bar.add_widget(WorkspacesWidget())
         bar.add_widget(space)
         bar.add_widget(LayoutWidget())
-        bar.add_widget(FloatingWidget())
         bar.add_widget(space)
         bar.add_widget(EchoWidget('T', bar.colors[DARKGRAY], max_length=60))
 
