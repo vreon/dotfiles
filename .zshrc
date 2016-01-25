@@ -113,6 +113,8 @@ if [ -d "$HOME/.gcloud" ]; then
     source ~/.gcloud/google-cloud-sdk/path.zsh.inc
 fi
 
+source ~/.zshrc_secrets  # API tokens and stuff
+
 ###########################################################
 # Prompt
 

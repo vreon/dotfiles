@@ -16,7 +16,7 @@ bspc subscribe > "$PANEL_FIFO" &
 xtitle -sf "T%s" > "$PANEL_FIFO" &
 clock -sf "S%Y-%m-%d %-I:%M%P" > "$PANEL_FIFO" &
 
-for widget in updates disk playing vpn cpu_temp gpu_temp; do
+for widget in updates disk playing vpn cpu_temp gpu_temp transit; do
     $PANEL_HOME/scripts/$widget $PANEL_SLEEPERS/$widget.pid > "$PANEL_FIFO" &
 done
 

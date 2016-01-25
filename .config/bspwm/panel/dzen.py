@@ -189,6 +189,24 @@ class MusicWidget(Widget):
         return _color(_icon('phones') + space + self.text, color)
 
 
+class TransitWidget(Widget):
+    """Display arrival times for next two trains."""
+    prefix = 'm'
+
+    def __init__(self):
+        self.update('0/0')
+
+    def update(self, line):
+        self.width = (len(line) + 1) * FONT_CHAR_WIDTH + 8
+        self.arrivals = line.split('/')
+
+    def render(self):
+        return _color(
+            '%s %s/%s' % (_icon('transit'), self.arrivals[0], self.arrivals[1]),
+            self.bar.colors[DARKGRAY]
+        )
+
+
 class PacmanWidget(Widget):
     """Display info about packages."""
     prefix = 'U'
@@ -388,6 +406,8 @@ def main(args):
         bar.add_widget(MusicWidget(max_length=60))
         bar.add_widget(separator)
         bar.add_widget(VPNWidget())
+        bar.add_widget(separator)
+        bar.add_widget(TransitWidget())
         bar.add_widget(separator)
         bar.add_widget(DiskUsageWidget())
         bar.add_widget(separator)
