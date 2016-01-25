@@ -8,7 +8,11 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
-redshift &  # Prevent self from going blind
+installed () {
+    command -v $1 >/dev/null 2>&1
+}
+
+installed redshift && redshift &
 
 # Fix keyboard
 setxkbmap -option "compose:rwin"
@@ -19,9 +23,9 @@ export PATH="${PATH}:~/.bin"
 export GTK_IM_MODULE="xim"
 xrdb -load .Xresources
 xsetroot -cursor_name left_ptr
-sh ~/.fehbg &
-compton -c -b
 sxhkd -f 50 &
-unclutter -root &
 urxvtd -q -f -o
+[ -f ~/.fehbg ] && sh ~/.fehbg &
+installed compton && compton -c -b
+installed unclutter && unclutter -root &
 exec bspwm
