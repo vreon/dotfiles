@@ -14,10 +14,6 @@ redshift &  # Prevent self from going blind
 setxkbmap -option "compose:rwin"
 setxkbmap -option "caps:swapescape"
 
-# xfce4
-# setxkbmap -option "altwin:swap_alt_win"
-# exec startxfce4
-
 # bspwm
 export PATH="${PATH}:~/.bin"
 export GTK_IM_MODULE="xim"
