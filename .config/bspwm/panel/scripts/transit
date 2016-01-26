@@ -8,6 +8,7 @@ read -r -d '' filter <<'EOF'
 def wholeminutes: . / (1000 * 60) | floor;
 
 .resultSet.arrival
+    | .[:2]
     | map((.estimated // .scheduled) - ($now | tonumber) | wholeminutes)
     | $prefix + join("/")
 EOF
