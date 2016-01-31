@@ -2,26 +2,28 @@
 
 ![Screenshot of desktop at 50328d7](screen.png)
 
-Dependencies:
+Required packages:
 
-  - bspwm-git ~
+  - bspwm-git *
   - compton-git *
   - dmenu-xft *
   - dzen2
-  - feh +
-  - mpc +
-  - mpd +
-  - pass +
-  - redshift +
   - rxvt-unicode
   - sutils-git *
   - sxhkd-git *
-  - sxiv-git +~
-  - unclutter +
-  - xfce4-notify +
-  - xfce4-screenshooter +
   - zsh
 
+Optional packages:
+
+  - feh
+  - mpc
+  - mpd
+  - pass
+  - redshift
+  - sxiv-git ~
+  - unclutter
+  - xfce4-notify
+  - xfce4-screenshooter
+
 \* AUR package  
-\+ optional, but recommended  
 ~ patched version from https://github.com/vreon/pkgbuilds
