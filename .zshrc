@@ -114,11 +114,14 @@ if [ -d "$HOME/.gcloud" ]; then
     source ~/.gcloud/google-cloud-sdk/path.zsh.inc
 fi
 
-source ~/.zshrc_secrets  # API tokens and stuff
-
 ###########################################################
 # Prompt
 
 export HOSTCOLOR=$(hostcolor)
 setopt prompt_subst
 PROMPT='%F{${HOSTCOLOR}}[%n@%m %~]${vcs_info_msg_0_}$%f '
+
+###########################################################
+# Per-host configuration, secrets, etc.
+
+source ~/.zshrc_local
