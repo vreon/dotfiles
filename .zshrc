@@ -72,6 +72,7 @@ alias sys='sudo systemctl'
 alias wk='workon'
 alias usage='du -h --max-depth=0 * | sort -hr'
 alias pyclean="find -regex '.*\.pyc\|.*__pycache__' -delete"
+alias dc="docker-compose"
 alias dcr="docker-compose run --rm"
 alias thr="docker run -it --rm"
 function whichpr {
