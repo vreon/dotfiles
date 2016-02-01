@@ -30,7 +30,7 @@ function edit() {
 
 function share() {
     YEST_FILE=$(mktemp)
-    echo -ne "*Yesterday*: \n*Today*: " > "$YEST_FILE"
+    echo -ne "*Y: \n*T: " > "$YEST_FILE"
     vim -o "$YEST_FILE" "$(newest)" && toslack -c "#standups" < "$YEST_FILE"
     rm "$YEST_FILE"
     exit 0
