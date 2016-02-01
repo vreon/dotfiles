@@ -202,7 +202,7 @@ class TransitWidget(Widget):
 
     def render(self):
         return _color(
-            '%s %s/%s' % (_icon('transit'), self.arrivals[0], self.arrivals[1]),
+            '%s %s' % (_icon('transit'), '/'.join(self.arrivals)),
             self.bar.colors[DARKGRAY]
         )
 
