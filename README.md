@@ -1,6 +1,6 @@
 ### vreon's dotfiles
 
-![Screenshot of desktop at 50328d7](screen.png)
+![Screenshot of desktop at 9d25246](screen.png)
 
 Required packages:
 
