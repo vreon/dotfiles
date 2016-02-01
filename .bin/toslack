@@ -1,0 +1,36 @@
+#!/bin/bash
+
+source ~/.zshrc_secrets
+
+USERNAME=$SLACK_USERNAME
+ICON_URL=$SLACK_ICON_URL
+CHANNEL=$SLACK_CHANNEL
+TOKEN=$SLACK_TOKEN
+
+while getopts "c:" opt; do
+    case "$opt" in
+    c)
+        CHANNEL=$OPTARG
+        ;;
+    esac
+done
+
+TEXT=$(cat)
+
+if [ -z "$TEXT" ]; then
+    exit 1
+fi
+
+# Slack requires these three characters in user input to be escaped
+TEXT=${TEXT//&/&amp;}
+TEXT=${TEXT//</&lt;}
+TEXT=${TEXT//>/&gt;}
+
+curl \
+    -X POST \
+    --data-urlencode "token=${TOKEN}" \
+    --data-urlencode "username=${USERNAME}" \
+    --data-urlencode "icon_url=${ICON_URL}" \
+    --data-urlencode "channel=${CHANNEL}" \
+    --data-urlencode "text=${TEXT}" \
+    https://slack.com/api/chat.postMessage
