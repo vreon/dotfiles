@@ -1,0 +1,15 @@
+#!/bin/bash
+
+token=$PUSHBULLET_API_TOKEN
+device_iden=$PUSHBULLET_PHONE_DEVICE_IDEN
+body=$(cat)
+payload=$(jq -n '{$body, $device_iden, type: "note"}' --arg body "$body" --arg device_iden "$device_iden")
+
+curl \
+    -s \
+    -X POST \
+    -H "Access-Token: ${token}" \
+    -H "Content-Type: application/json" \
+    --data-binary "$payload" \
+    https://api.pushbullet.com/v2/pushes \
+    > /dev/null
