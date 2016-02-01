@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.zshrc_secrets
+
 appID=$TRIMET_API_APPID
 locIDs=$TRIMET_API_LOCID
 prefix=m

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.zshrc_secrets
+
 token=$PUSHBULLET_API_TOKEN
 device_iden=$PUSHBULLET_PHONE_DEVICE_IDEN
 body=$(cat)

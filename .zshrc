@@ -122,6 +122,6 @@ setopt prompt_subst
 PROMPT='%F{${HOSTCOLOR}}[%n@%m %~]${vcs_info_msg_0_}$%f '
 
 ###########################################################
-# Per-host configuration, secrets, etc.
+# Per-host configuration
 
 source ~/.zshrc_local
