@@ -89,7 +89,6 @@ else
     export EDITOR=$(which vim)
 fi
 
-export EDITOR=/usr/bin/nvim
 export PROJECT_HOME=$HOME/Projects
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 export BROWSER=google-chrome-unstable
