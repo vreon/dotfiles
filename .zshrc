@@ -67,7 +67,6 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
 # Shortcuts and common actions
-alias vim='nvim'
 alias sys='sudo systemctl'
 alias wk='workon'
 alias usage='du -h --max-depth=0 * | sort -hr'
@@ -96,10 +95,17 @@ alias gspf='git stash show -p | git apply && git stash drop'
 ###########################################################
 # Environment
 
+if command -v nvim; then
+    export EDITOR=$(which nvim)
+    export NVIM_LISTEN_ADDRESS=/tmp/nvim
+    alias vim='nvim'
+else
+    export EDITOR=$(which vim)
+fi
+
 export EDITOR=/usr/bin/nvim
 export PROJECT_HOME=$HOME/Projects
 export PYTHONSTARTUP=$HOME/.pythonrc.py
-export NVIM_LISTEN_ADDRESS=/tmp/nvim
 
 export PATH=${PATH}:~/.bin                                # Local bins
 export PATH=${PATH}:~/.gem/ruby/2.0.0/bin                 # Ruby gems
