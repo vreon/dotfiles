@@ -81,7 +81,7 @@ alias gspf='git stash show -p | git apply && git stash drop'
 ###########################################################
 # Environment
 
-if command -v nvim; then
+if command -v nvim > /dev/null; then
     export EDITOR=$(which nvim)
     export NVIM_LISTEN_ADDRESS=/tmp/nvim
     alias vim='nvim'
