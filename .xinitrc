@@ -8,17 +8,27 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
+. ~/.zshrc_local
+
 installed () {
     command -v $1 >/dev/null 2>&1
 }
 
 installed redshift && redshift &
 
-# Fix keyboard
-setxkbmap -option "compose:rwin"
-setxkbmap -option "caps:swapescape"
+case "$KEYBOARD" in
+apple)
+    setxkbmap -option "compose:rwin"
+    setxkbmap -option "caps:swapescape"
+    ;;
+chromebook)
+    xmodmap -e "keycode 133 = Escape"
+    xmodmap -e "remove mod1 = Alt_L"
+    xmodmap -e "keycode 64 = Super_L"
+    xmodmap -e "add mod4 = Super_L"
+    ;;
+esac
 
-# bspwm
 export PATH="${PATH}:~/.bin"
 export GTK_IM_MODULE="xim"
 xrdb -load .Xresources
