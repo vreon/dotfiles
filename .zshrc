@@ -33,23 +33,9 @@ precmd () { vcs_info }
 ###########################################################
 # Key bindings
 
-autoload zkbd  # invoke `zkbd` for setup
-source ~/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE}
-
 bindkey '^[[Z' reverse-menu-complete  # Shift-Tab
 bindkey '^R' history-incremental-search-backward
 bindkey '^Z' undo
-
-bindkey "${key[Backspace]}" backward-delete-char
-bindkey "${key[Delete]}" delete-char
-bindkey "${key[Home]}" beginning-of-line
-bindkey "${key[End]}" end-of-line
-bindkey "${key[PageUp]}" up-line-or-history
-bindkey "${key[PageDown]}" down-line-or-history
-bindkey "${key[Up]}" up-line-or-search
-bindkey "${key[Down]}" down-line-or-search
-bindkey "${key[Left]}" backward-char
-bindkey "${key[Right]}" forward-char
 
 ###########################################################
 # virtualenvwrapper
