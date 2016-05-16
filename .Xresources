@@ -8,7 +8,7 @@ urxvt.saveLines: 8192
 urxvt.depth: 32
 urxvt.scrollBar: false
 urxvt.perl-ext-common: url-select,clipboard,font-size
-urxvt.url-select.launcher: google-chrome-unstable
+urxvt.url-select.launcher: xdg-open
 urxvt.url-select.underline: true
 urxvt.keysym.M-u: perl:url-select:select_next
 urxvt.keysym.M-c: perl:clipboard:copy
