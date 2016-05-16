@@ -14,10 +14,10 @@ filetype plugin on
 colorscheme malachite
 syntax on
 
-" au BufRead,BufNewFile TODO,*.TODO,*.todo set filetype=todo
-
-" It's Jinja, dammit!
-au  BufNewFile,BufRead *.html set syntax=jinja
+" autocmd BufRead,BufNewFile TODO,*.TODO,*.todo set filetype=todo
+autocmd BufNewFile,BufRead *.html set syntax=jinja
+autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
+autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
 
 " Hide splash screen
 set shortmess+=I
