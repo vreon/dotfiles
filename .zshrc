@@ -93,6 +93,7 @@ export PROJECT_HOME=$HOME/Projects
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 export BROWSER=google-chrome-unstable
 export BROWSER_PRIVATE='google-chrome-unstable --incognito'
+export BSPWM_USE_PANEL=true
 
 export PATH=${PATH}:~/.bin                                # Local bins
 export PATH=${PATH}:~/.gem/ruby/2.0.0/bin                 # Ruby gems

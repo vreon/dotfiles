@@ -7,7 +7,6 @@ Required packages:
   - bspwm-git *
   - compton-git *
   - dmenu-xft *
-  - dzen2
   - rxvt-unicode
   - sutils-git *
   - sxhkd-git *
@@ -15,6 +14,7 @@ Required packages:
 
 Optional packages:
 
+  - dzen2
   - feh
   - mpc
   - mpd

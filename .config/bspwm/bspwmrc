@@ -26,4 +26,4 @@ bspc config external_rules_command $HOME/.bin/bspwm-rules
 bspc rule -a crx_nckgahadagoaajjgafhacjanaoiihapd state=floating  # hangouts
 bspc rule -a popimage state=floating
 
-$HOME/.config/bspwm/panel/panel &
+[[ $BSPWM_USE_PANEL == true ]] && $HOME/.config/bspwm/panel/panel &
