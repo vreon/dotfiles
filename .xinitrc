@@ -36,6 +36,6 @@ xsetroot -cursor_name left_ptr
 sxhkd -f 50 &
 urxvtd -q -f -o
 [ -f ~/.fehbg ] && sh ~/.fehbg &
-installed compton && compton -c -b
+installed compton && compton -b
 installed unclutter && unclutter -root &
 exec bspwm
