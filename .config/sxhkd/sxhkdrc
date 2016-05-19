@@ -181,4 +181,7 @@ super + Escape ; c
     pkill -USR1 -x compton; \
     notify-send -t 3000 "compton" "configuration reloaded"
 
+super + e
+    croutoncycle cros
+
 # vim: set ts=4 sw=4 et :
