@@ -4,7 +4,7 @@ colors=($(xrq -1 colorscheme.color{0..15}))
 primary=$(hostcolor)
 
 bspc config border_width        2
-bspc config window_gap         20
+bspc config window_gap          ${BSPWM_WINDOW_GAP:-20}
 
 bspc config split_ratio         0.52
 bspc config borderless_monocle  true
