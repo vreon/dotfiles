@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Location of config directory for splash
 readonly DIR="$HOME/.config/wallpaper"
