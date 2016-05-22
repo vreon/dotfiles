@@ -80,7 +80,7 @@ function effect_reset() {
 }
 
 function effect_duotone() {
-    mogrify -colorspace gray +sigmoidal-contrast 3,20% -fill "$(xrq colorscheme.color$(hostcolor))" -tint 50 "$CURRENT"
+    mogrify -colorspace gray +sigmoidal-contrast 3,20% -fill "$(xrq colorscheme.color${HOSTCOLOR})" -tint 50 "$CURRENT"
     apply
 }
 

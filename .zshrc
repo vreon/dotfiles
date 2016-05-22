@@ -94,6 +94,7 @@ export PYTHONSTARTUP=$HOME/.pythonrc.py
 export BROWSER=google-chrome-unstable
 export BROWSER_PRIVATE='google-chrome-unstable --incognito'
 export BSPWM_USE_PANEL=true
+export HOSTCOLOR=7
 
 export PATH=${PATH}:~/.bin                                # Local bins
 export PATH=${PATH}:~/.gem/ruby/2.0.0/bin                 # Ruby gems
@@ -111,7 +112,6 @@ fi
 ###########################################################
 # Prompt
 
-export HOSTCOLOR=$(hostcolor)
 setopt prompt_subst
 PROMPT='%F{${HOSTCOLOR}}[%n@%m %~]${vcs_info_msg_0_}$%f '
 
