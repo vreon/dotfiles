@@ -1,0 +1,14 @@
+#!/bin/bash
+# Run commands on each git repository in the current directory
+
+rst=$(tput sgr0)
+bld=$(tput bold)
+blu=$(tput setaf 4)
+
+for pth in $(find $(pwd) -mindepth 2 -maxdepth 2 -name .git); do
+    d=$(dirname $pth)
+    pushd $d >/dev/null
+    echo -e "${bld}${blu}--> ${d}${rst}"
+    bash -c "$1"
+    popd >/dev/null
+done

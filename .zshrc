@@ -77,6 +77,7 @@ alias gp='git pull'
 alias grmb='git branch --merged | grep -v master | xargs git branch -d'
 alias gs='git status -sb'
 alias gspf='git stash show -p | git apply && git stash drop'
+alias gfer='git for-each-repo'
 
 ###########################################################
 # Environment
