@@ -1,7 +1,0 @@
-#!/bin/sh
-case "$(hostname)" in
-    chenjesu) color=12 ;;
-    kvothe) color=10 ;;
-    *) color=7 ;;
-esac
-echo $color
