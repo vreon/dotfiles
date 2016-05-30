@@ -184,4 +184,7 @@ super + Escape ; c
 super + e
     croutoncycle cros
 
+ctrl + super + shift + F1
+    croutoncycle cros
+
 # vim: set ts=4 sw=4 et :
