@@ -4,6 +4,7 @@
 dotfiles=$HOME/.files
 
 mkdir -p $HOME/.ssh
+mkdir -p $HOME/.urxvt
 mkdir -p $HOME/.virtualenvs
 
 links=(
@@ -18,6 +19,7 @@ links=(
     .password-store
     .ssh/config
     .tmux.conf
+    .urxvt/ext
     .vim
     .vimrc
     .XCompose
