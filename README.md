@@ -5,21 +5,21 @@
 Required packages:
 
   - bspwm-git *
-  - compton-git *
-  - dmenu-xft *
   - rxvt-unicode
-  - sutils-git *
   - sxhkd-git *
   - zsh
 
 Optional packages:
 
+  - compton-git *
+  - dmenu-xft *
   - dzen2
   - feh
   - mpc
   - mpd
   - pass
   - redshift
+  - sutils-git *
   - sxiv-git ~
   - unclutter
   - xfce4-notify
