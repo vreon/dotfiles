@@ -60,6 +60,7 @@ alias pyclean="find -regex '.*\.pyc\|.*__pycache__' -delete"
 alias dc="docker-compose"
 alias dcr="docker-compose run --rm"
 alias thr="docker run -it --rm"
+alias k='kwrapper'
 function whichpr {
     git log $1..master --ancestry-path --merges --oneline | tail -n 1
 }

@@ -1,0 +1,3 @@
+#!/bin/bash
+# Spawn an interactive shell in a pod
+kubectl exec -it $1 --container="$2" -- sh
