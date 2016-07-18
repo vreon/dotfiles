@@ -137,7 +137,7 @@ super + ctrl + p
 super + ctrl + o
     $HOME/.bin/dmenu_yest
 
-XF86Launch6
+XF86Launch{A,6}
     xfce4-screenshooter -r
 
 ################################################################################
@@ -149,12 +149,21 @@ XF86Audio{Prev,Play,Next}
 XF86Audio{Lower,Raise}Volume
     amixer set Master 2%{-,+}
 
+XF86AudioMute
+    amixer set Master toggle
+
 # why yes, I am lazy
 super + {F7,F8,F9,shift+F8}
     mpc -q {prev,toggle,next,stop}
 
 super + {F11,F12}
     amixer set Master 2%{-,+}
+
+XF86KbdBrightness{Up,Down}
+    kbdlight {up,down}
+
+XF86MonBrightness{Up,Down}
+    xbacklight -ctrl acpi_video0 -{inc,dec} 5
 
 ################################################################################
 # Wallpaper control
