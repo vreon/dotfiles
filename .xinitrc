@@ -33,7 +33,7 @@ export PATH="${PATH}:~/.bin"
 export GTK_IM_MODULE="xim"
 xrdb -load .Xresources
 xsetroot -cursor_name left_ptr
-sxhkd -f 50 &
+sxhkd &
 urxvtd -q -f -o
 [ -f ~/.fehbg ] && sh ~/.fehbg &
 installed compton && compton -b

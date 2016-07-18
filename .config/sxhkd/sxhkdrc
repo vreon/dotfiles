@@ -103,7 +103,7 @@ super + Home
 
 # Focus on click (and pass the click down)
 ~button1
-    bspc pointer -g focus
+    bspc node pointed -f
 
 # Move and resize windows with cursor
 super + button{1-3}
