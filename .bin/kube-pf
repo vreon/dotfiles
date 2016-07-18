@@ -1,0 +1,3 @@
+#!/bin/bash
+# Alias for `port-forward`
+kubectl port-forward $@

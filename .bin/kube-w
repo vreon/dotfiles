@@ -7,7 +7,7 @@ if [[ -z $@ ]]; then
     (
         echo 'NAME#CLUSTER#USER#NAMESPACE'
         kubectl config view -o json | jq -r '.contexts[] | [.name, .context.cluster, .context.user, .context.namespace] | join("#")'
-    ) | column -s '#' -t | grep --color=always -E "^${current}.*|$"
+    ) | column -s '#' -t | grep --color=always -E "^${current}\s.*|$"
 else
     kubectl config use-context $@
 fi

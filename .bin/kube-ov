@@ -11,10 +11,13 @@ white='\e[0;37m'
 reset='\e[0m'
 
 section() {
-    echo -ne $2
-    echo "===== $1 ====="
-    kubectl get ${@:3} $1 2>&1
-    echo -e $reset
+    out=$(kubectl get ${@:3} $1 2>&1)
+    if [[ -n $out ]]; then
+        echo -ne $2
+        echo "===== $1 ====="
+        echo "$out"
+        echo -e $reset
+    fi
 }
 
 nsflags=''
@@ -22,19 +25,29 @@ if [[ $1 == '--all' ]]; then
     nsflags='--all-namespaces'
 fi
 
-section pods $cyan $nsflags
-section deployments $red $nsflags
-section replicasets $purple $nsflags
-section services $yellow $nsflags
+# v1 top-level API objects
+section configmaps $red $nsflags
 section endpoints $green $nsflags
-section secrets $yellow $nsflags
-section configmaps $blue $nsflags
-section persistentvolumeclaims $purple $nsflags
-section resourcequotas $purple $nsflags
+section limitranges $yellow $nsflags
+section persistentvolumeclaims $blue $nsflags
+section pods $purple $nsflags
+section replicationcontrollers $cyan $nsflags
+section resourcequotas $white $nsflags
+section secrets $red $nsflags
+section serviceaccounts $green $nsflags
+section services $yellow $nsflags
+
+# v1beta1 top-level API objects
+section daemonsets $blue $nsflags
+section deployments $purple $nsflags
+section horizontalpodautoscalers $cyan $nsflags
+section ingresses $white $nsflags
+section jobs $red $nsflags
+section replicasets $green $nsflags
 
 # non-namespaced stuff
 if [[ $1 == '--all' ]]; then
-    section persistentvolumes $cyan
-    section namespaces $green
-    section nodes $white
+    section namespaces $yellow
+    section nodes $blue
+    section persistentvolumes $purple
 fi
