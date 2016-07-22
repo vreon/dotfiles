@@ -99,21 +99,6 @@ super + Home
     bspc config -d focused bottom_padding 0
 
 ################################################################################
-# Mousey stuff
-
-# Focus on click (and pass the click down)
-~button1
-    bspc node pointed -f
-
-# Move and resize windows with cursor
-super + button{1-3}
-    ; bspc pointer -g {move,resize_side,resize_corner}
-
-# Terminate action when button is released
-super + @button{1-3}
-    bspc pointer -u
-
-################################################################################
 # Launchers
 
 super + ctrl + Return

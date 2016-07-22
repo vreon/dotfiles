@@ -19,6 +19,9 @@ bspc config normal_private_border_color "${colors[8]}"
 bspc config focused_private_border_color "${colors[7]}"
 bspc config urgent_border_color "${colors[9]}"
 
+bspc config click_to_focus true
+bspc config pointer_modifier mod4
+
 bspc monitor -d 1 2 3 4 5 6 7 8 9 0
 
 bspc config external_rules_command $HOME/.bin/bspwm-rules
