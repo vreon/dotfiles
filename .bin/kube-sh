@@ -1,3 +1,5 @@
 #!/bin/bash
-# Spawn an interactive shell in a pod
-kubectl exec -it $1 --container="$2" -- sh
+# Quickly exec a command in a pod
+COMMAND=${@:3}
+COMMAND=${COMMAND:-sh}
+kubectl exec -it $1 --container="$2" -- ${COMMAND}
