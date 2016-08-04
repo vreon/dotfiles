@@ -66,8 +66,15 @@ function saved() {
 }
 
 function web() {
-    local url=$(curl -s "http://www.splashbase.co/api/v1/images/random?images_only=true" | jq -r ". | .large_url // .url")
-    curl -so "$ORIG" "$url"
+    local url
+    local src=$1
+
+    case "$src" in
+        splashbase) url=$(curl -s "http://www.splashbase.co/api/v1/images/random?images_only=true" | jq -r ". | .large_url // .url") ;;
+        *) url="https://source.unsplash.com/random/2880x1800?$src" ;;
+    esac
+
+    curl -Lso "$ORIG" "$url"
     rm "$CURRENT"
     cp "$ORIG" "$CURRENT"
     apply
@@ -159,7 +166,7 @@ function main() {
         store) store "$@" ;;
         sync) sync "$@" ;;
         pick) pick ;;
-        web) web ;;
+        web) web "$@" ;;
         saved) saved ;;
         effect) effect "$@" ;;
         \?) invalid ;;
