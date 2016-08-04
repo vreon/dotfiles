@@ -1,5 +1,5 @@
 #!/bin/bash
-# List all config contexts or set the current context
+# List all contexts or set the current namespace
 
 current=$(kubectl config current-context)
 
@@ -9,5 +9,6 @@ if [[ -z $@ ]]; then
         kubectl config view -o json | jq -r '.contexts[] | [.name, .context.cluster, .context.user, .context.namespace] | join("#")'
     ) | column -s '#' -t | grep --color=always -E "^${current}\s.*|$"
 else
-    kubectl config use-context $@
+    kubectl config set-context $current --namespace=$@
+    echo "switched to namespace \"$@\"."
 fi
