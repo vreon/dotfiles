@@ -115,7 +115,11 @@ fi
 # Prompt
 
 setopt prompt_subst
-PROMPT='%F{${HOSTCOLOR}}[%n@%m %~]${vcs_info_msg_0_}$%f '
+if [ -n "$MINIMAL_PROMPT" ]; then
+    PROMPT='%F{${HOSTCOLOR}}>%f '
+else
+    PROMPT='%F{${HOSTCOLOR}}[%n@%m %~]${vcs_info_msg_0_}$%f '
+fi
 
 ###########################################################
 # Per-host configuration

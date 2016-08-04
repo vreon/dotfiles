@@ -105,7 +105,8 @@ super + ctrl + Return
     urxvtc || urxvt
 
 super + shift + Return
-    urxvtc -title popterm -geometry 80x2 -fn "xft:PragmataPro:size=20"
+    urxvtc -title popterm -geometry 60x2 -fn "xft:Iosevka Light:size=18" \
+        -cursorBlink -cursorUnderline -letterSpace -2 -e sh -c 'MINIMAL_PROMPT=1 zsh'
 
 super + Return
     urxvtc -bg "[70]$($HOME/.bin/xrq colorscheme.color0)"
