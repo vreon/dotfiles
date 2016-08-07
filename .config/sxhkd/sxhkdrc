@@ -115,7 +115,7 @@ super + n
     $HOME/.bin/dmenu_custom
 
 super + ctrl + {u,i}
-    {$BROWSER,$BROWSER_PRIVATE}
+    sh -c '{$BROWSER,$BROWSER_PRIVATE}'
 
 super + ctrl + p
     $HOME/.bin/dmenu_pass --type
