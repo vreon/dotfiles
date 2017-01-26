@@ -20,12 +20,10 @@ function store(){
     local md5=($(md5sum "$1"))
     local saved="$STORE/$md5"
     cp "$1" "$saved"
-    exit 0
 }
 
 function save() {
     store "$ORIG"
-    exit 0
 }
 
 function sync() {
@@ -38,31 +36,29 @@ function sync() {
 
     rsync -azhu --progress "${STORE}/" "${host}:${STORE}/"
     rsync -azhu --progress "${host}:${STORE}/" "${STORE}/"
-
-    exit 0
 }
 
 function pick() {
     local selected=($(sxiv -N popimage -rtbo "$STORE"))
 
-    [ -n "$selected" ] || exit 0
+    [ -n "$selected" ] || exit 1
+
+    use "$selected"
+}
+
+function use() {
+    local selected="$1"
 
     rm "$ORIG"
     cp "$selected" "$ORIG"
     rm "$CURRENT"
     cp "$ORIG" "$CURRENT"
     apply
-    exit 0
 }
 
 function saved() {
     local selected="$STORE/$(ls "$STORE" | grep -v -e "0000000" | shuf -n 1)"
-    rm "$ORIG"
-    cp "$selected" "$ORIG"
-    rm "$CURRENT"
-    cp "$ORIG" "$CURRENT"
-    apply
-    exit 0
+    use "$selected"
 }
 
 function web() {
@@ -78,7 +74,6 @@ function web() {
     rm "$CURRENT"
     cp "$ORIG" "$CURRENT"
     apply
-    exit 0
 }
 
 function effect_reset() {
@@ -120,14 +115,6 @@ function effect() {
             *) >&2 echo "Invalid effect: $effect"; exit 1 ;;
         esac
     done
-
-    exit 0
-}
-
-function invalid() {
-    echo "Invalid option: -$OPTARG" >&2
-    usage
-    exit 1
 }
 
 function usage() {
@@ -135,13 +122,14 @@ function usage() {
     echo "Manage wallpaper."
     echo
     echo "Commands:"
-    echo "  save    Save the current wallpaper"
-    echo "  store   Add the named wallpaper to storage"
-    echo "  sync    Synchronize wallpaper storage with another host's storage"
-    echo "  pick    Interactively pick a wallpaper"
-    echo "  web     Select a wallpaper at random from the web"
-    echo "  saved   Select a wallpaper at random from saved wallpapers"
-    echo "  effect  Interactively pick an effect to apply to the current wallpaper"
+    echo "  use FILE     Set the current wallpaper to FILE"
+    echo "  save         Save the current wallpaper"
+    echo "  store FILE   Add FILE to wallpaper storage"
+    echo "  sync HOST    Synchronize wallpaper storage with HOST"
+    echo "  pick         Interactively pick a wallpaper"
+    echo "  web QUERY    Select a wallpaper at random from the web"
+    echo "  saved        Select a wallpaper at random from saved wallpapers"
+    echo "  effect NAME  Apply an effect to the current wallpaper"
     echo
     echo "Options: "
     echo "  -h      Show this usage message and exit"
@@ -151,8 +139,8 @@ function usage() {
 function main() {
     while getopts ":h" opt; do
         case "$opt" in
-            h) usage && exit 0 ;;
-            \?) invalid ;;
+            h) usage && exit ;;
+            \?) usage >&2 && exit 1 ;;
         esac
     done
 
@@ -161,7 +149,10 @@ function main() {
     cmd=$1
     shift
 
+    [ -z "$cmd" ] && usage && exit
+
     case "$cmd" in
+        use) use "$@" ;;
         save) save ;;
         store) store "$@" ;;
         sync) sync "$@" ;;
@@ -169,10 +160,8 @@ function main() {
         web) web "$@" ;;
         saved) saved ;;
         effect) effect "$@" ;;
-        \?) invalid ;;
+        *) usage >&2 && exit 1 ;;
     esac
-
-    usage >&2
 }
 
 main "$@"
