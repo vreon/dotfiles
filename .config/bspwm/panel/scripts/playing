@@ -1,7 +1,7 @@
 #!/bin/sh
 
 while true; do
-    if ! pidof mpd > /dev/null; then
+    if ! mpc > /dev/null; then
         sleepid 3m $1
     else
         echo "M$(mpc current -f "[%artist% - ][%title%|%file%]")"
