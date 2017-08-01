@@ -236,6 +236,25 @@ class PacmanWidget(Widget):
         return updates + pacfiles
 
 
+class FeedsWidget(Widget):
+    """Display RSS unread count."""
+    prefix = 'F'
+
+    def __init__(self):
+        self.update('0')
+
+    def update(self, line):
+        self.num_unread = int(line)
+        self.width = (len(str(self.num_unread)) + 1) * FONT_CHAR_WIDTH + 8
+
+    def render(self):
+        return _threshold(
+            '%s %s' % (_icon('rss'), self.num_unread),
+            self.num_unread,
+            {0: self.bar.colors[DARKGRAY], 1: self.bar.colors[BRIGHTYELLOW]}
+        )
+
+
 class DiskUsageWidget(Widget):
     """Display percentage of root partition used."""
     prefix = 'D'
@@ -414,6 +433,8 @@ def main(args):
         bar.add_widget(TemperatureWidget('tC', 'cpu'))
         bar.add_widget(separator)
         bar.add_widget(TemperatureWidget('tG', 'gpu'))
+        bar.add_widget(separator)
+        bar.add_widget(FeedsWidget())
         bar.add_widget(separator)
         bar.add_widget(PacmanWidget())
         bar.add_widget(separator)
