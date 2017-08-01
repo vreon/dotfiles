@@ -86,8 +86,18 @@ function effect_duotone() {
     apply
 }
 
+function effect_tint() {
+    mogrify +level-colors "$(xrq colorscheme.color${HOSTCOLOR})", -tint 50 "$CURRENT"
+    apply
+}
+
 function effect_lighten() {
     mogrify -fill white -colorize 50% "$CURRENT"
+    apply
+}
+
+function effect_darken() {
+    mogrify -fill black -colorize 50% "$CURRENT"
     apply
 }
 
@@ -109,8 +119,10 @@ function effect() {
 
         case "$effect" in
             duotone) effect_duotone "$@" ;;
+            tint) effect_tint "$@" ;;
             posterize) effect_posterize "$@" ;;
             lighten) effect_lighten "$@" ;;
+            darken) effect_darken "$@" ;;
             reset) effect_reset "$@" ;;
             *) >&2 echo "Invalid effect: $effect"; exit 1 ;;
         esac
