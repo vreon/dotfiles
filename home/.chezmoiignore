@@ -1,0 +1,22 @@
+{{- if not (has "arch" .groups) }}
+# Files specific to Arch Linux environments
+.local/bin/pacmirrors
+{{- end }}
+
+{{- if not (has "x" .groups) }}
+# Files specific to x11 environments
+.XCompose
+.chezmoiscripts/bspwmrc.sh
+.chezmoiscripts/dunst.sh
+.chezmoiscripts/splash.sh
+.config/bspwm
+.config/dunst
+.config/picom
+.config/polybar
+.config/sxhkd
+.local/bin/dmenu*
+.local/bin/kbd-udev
+.local/bin/polybar*
+.local/bin/splash
+.xinitrc
+{{- end }}
