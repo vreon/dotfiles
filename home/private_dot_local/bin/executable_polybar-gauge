@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+"""
+Read a float value from stdin and print a Polybar format string that's colored
+according to the defined levels.
+"""
+
+import argparse
+import sys
+
+
+def get_color(value, levels):
+    sorted_levels = sorted(levels, reverse=True)
+
+    for level_min, color in sorted_levels:
+        if value >= float(level_min):
+            return color
+
+    return sorted_levels[0][1]
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("-i", "--icon", type=str)
+    parser.add_argument("-f", "--format", type=str, default="%d")
+    parser.add_argument(
+        "levels",
+        type=str,
+        help='comma separated list of lower bounds and colors, like "0:#000,0.6:#ff0,0.9:#f00"',
+    )
+    args = parser.parse_args()
+
+    try:
+        value = float(sys.stdin.read())
+    except ValueError:
+        value = "0"
+
+    levels = []
+    for level_str in args.levels.split(","):
+        level_min, color = level_str.split(":")
+        levels.append((float(level_min), color))
+
+    color = get_color(value, levels)
+    parts = ["%{F", color, "}"]
+
+    if args.icon:
+        parts.extend([args.icon, " "])
+
+    parts.extend([args.format % value, "%{F-}"])
+
+    print("".join(parts))

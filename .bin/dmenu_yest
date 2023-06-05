@@ -1,8 +1,0 @@
-#!/bin/bash
-TASK=$(dmenu -fn "PragmataPro-11px" -sb "$(xrq colorscheme.color12)" -nf "$(xrq colorscheme.foreground)" -nb "$(xrq colorscheme.color0)" -p "on" < /dev/null)
-
-if [ -z "$TASK" ]; then
-    exit 1
-fi
-
-yest -t "$TASK"

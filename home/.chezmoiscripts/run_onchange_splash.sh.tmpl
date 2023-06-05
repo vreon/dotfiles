@@ -1,0 +1,8 @@
+#!/bin/sh
+# vim: ft=sh
+# appearance hash: {{ .appearance.colors | toJson | sha256sum }}
+
+if command -v splash >/dev/null; then
+  splash effect reset
+  splash effect duotone {{ index (index .appearance.colors.schemes .appearance.colors.scheme) .appearance.colors.primary | printf "#%06x" | quote }}
+fi

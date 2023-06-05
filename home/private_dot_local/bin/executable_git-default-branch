@@ -1,0 +1,4 @@
+#!/bin/bash
+# Print the name of a git repo's default branch
+# Not working? Try `git remote set-head origin -a`
+git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'

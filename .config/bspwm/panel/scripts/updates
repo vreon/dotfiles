@@ -1,6 +1,0 @@
-#!/bin/sh
-
-while true; do
-    echo "U$(checkupdates | wc -l) $(pacfiles | wc -l)"
-    sleepid 2h $1
-done

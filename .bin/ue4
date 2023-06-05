@@ -1,4 +1,0 @@
-#!/bin/bash
-pushd /mnt/archive/builds/UnrealEngine/Engine/Binaries/Linux > /dev/null
-LD_PRELOAD=/usr/lib/nvidia/libGL.so ./UE4Editor
-popd > /dev/null

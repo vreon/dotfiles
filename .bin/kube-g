@@ -1,3 +1,0 @@
-#!/bin/bash
-# Alias for `get`
-kubectl get $@

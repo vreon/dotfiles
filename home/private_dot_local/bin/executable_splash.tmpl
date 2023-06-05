@@ -1,0 +1,183 @@
+#!/bin/bash
+# Wallpaper management utility
+
+# Location of config directory for splash
+readonly DIR="${XDG_DATA_HOME:-$HOME/.local/share}/wallpaper"
+
+# Location of storage for wallpapers
+readonly STORE="$DIR/store"
+
+# The currently selected wallpaper, without effects
+readonly ORIG="$DIR/orig"
+
+# The currently selected wallpaper, with effects
+readonly CURRENT="$DIR/current"
+
+function apply() {
+	feh --bg-fill "$CURRENT"
+}
+
+function store() {
+	IFS=" " read -r -a md5 <<<"$(md5sum "$1")"
+	local saved="$STORE/${md5[0]}"
+	cp "$1" "$saved"
+}
+
+function save() {
+	store "$ORIG"
+}
+
+function sync() {
+	local host=$1
+
+	if [ -z "$host" ]; then
+		echo >&2 'error: sync with which host?'
+		exit 1
+	fi
+
+	rsync -azhu --progress "${STORE}/" "${host}:${STORE}/"
+	rsync -azhu --progress "${host}:${STORE}/" "${STORE}/"
+}
+
+function pick() {
+	local selected=($(sxiv -N popimage -rtbo "$STORE"))
+
+	[ -n "$selected" ] || exit 1
+
+	use "$selected"
+}
+
+function use() {
+	local selected="$1"
+
+	rm "$ORIG"
+	cp "$selected" "$ORIG"
+	rm "$CURRENT"
+	cp "$ORIG" "$CURRENT"
+	apply
+}
+
+function saved() {
+	local selected
+  selected="$STORE/$(ls "$STORE" | grep -v -e "0000000" | shuf -n 1)"
+	use "$selected"
+}
+
+function web() {
+	local url
+	local src=$1
+
+	case "$src" in
+	splashbase) url=$(curl -s "http://www.splashbase.co/api/v1/images/random?images_only=true" | jq -r ". | .large_url // .url") ;;
+	*) url="https://source.unsplash.com/random/2880x1800?$src" ;;
+	esac
+
+	curl -Lso "$ORIG" "$url"
+	rm "$CURRENT"
+	cp "$ORIG" "$CURRENT"
+	apply
+}
+
+function effect_reset() {
+	cp "$ORIG" "$CURRENT"
+	apply
+}
+
+function effect_duotone() {
+	mogrify -colorspace gray +sigmoidal-contrast 3,20% -fill "$1" -tint 50 "$CURRENT"
+	apply
+}
+
+function effect_tint() {
+	mogrify +level-colors "$1", -tint 50 "$CURRENT"
+	apply
+}
+
+function effect_lighten() {
+	mogrify -fill white -colorize 50% "$CURRENT"
+	apply
+}
+
+function effect_darken() {
+	mogrify -fill black -colorize 50% "$CURRENT"
+	apply
+}
+
+function effect_posterize() {
+	local threshold="$1"
+	threshold=${threshold:=50%}
+	mogrify -threshold "$threshold" -level -50% "$CURRENT"
+	apply
+}
+
+function effect() {
+	while true; do
+		local effect=$1
+		shift
+
+		if [[ -z "$effect" ]]; then
+			break
+		fi
+
+		case "$effect" in
+		duotone) effect_duotone "$@"; shift ;;
+		tint) effect_tint "$@"; shift ;;
+		posterize) effect_posterize "$@" ;;
+		lighten) effect_lighten "$@" ;;
+		darken) effect_darken "$@" ;;
+		reset) effect_reset "$@" ;;
+		*)
+			echo >&2 "Invalid effect: $effect"
+			exit 1
+			;;
+		esac
+	done
+}
+
+function usage() {
+	echo "Usage: $(basename "$0") [-h] COMMAND"
+	echo "Manage wallpaper."
+	echo
+	echo "Commands:"
+	echo "  use FILE     Set the current wallpaper to FILE"
+	echo "  save         Save the current wallpaper"
+	echo "  store FILE   Add FILE to wallpaper storage"
+	echo "  sync HOST    Synchronize wallpaper storage with HOST"
+	echo "  pick         Interactively pick a wallpaper"
+	echo "  web QUERY    Select a wallpaper at random from the web"
+	echo "  saved        Select a wallpaper at random from saved wallpapers"
+	echo "  effect NAME  Apply an effect to the current wallpaper"
+	echo
+	echo "Options: "
+	echo "  -h      Show this usage message and exit"
+}
+
+function main() {
+	while getopts ":h" opt; do
+		case "$opt" in
+		h) usage && exit ;;
+		\?) usage >&2 && exit 1 ;;
+		esac
+	done
+
+	shift $((OPTIND - 1))
+
+	cmd=$1
+	shift
+
+	[ -z "$cmd" ] && usage && exit
+
+	case "$cmd" in
+	use) use "$@" ;;
+	save) save ;;
+	store) store "$@" ;;
+	sync) sync "$@" ;;
+	pick) pick ;;
+	web) web "$@" ;;
+	saved) saved ;;
+	effect) effect "$@" ;;
+	*) usage >&2 && exit 1 ;;
+	esac
+}
+
+main "$@"

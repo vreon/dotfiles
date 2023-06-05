@@ -1,5 +1,0 @@
-#!/bin/bash
-# Quickly exec a command in a pod
-COMMAND=${@:3}
-COMMAND=${COMMAND:-sh}
-kubectl exec -it $1 --container="$2" -- ${COMMAND}

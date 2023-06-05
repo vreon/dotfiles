@@ -1,0 +1,57 @@
+# Shadow
+shadow = true;
+shadow-radius = 20;
+shadow-offset-x = -20;
+shadow-offset-y = -20;
+shadow-opacity = 0.7;
+shadow-exclude = [
+    "!focused",
+    "name ~= '^dzen'",
+    "class_i = 'dmenu'",
+    "class_i = 'presel_feedback'"
+];
+shadow-color = "{{ index (index .appearance.colors.schemes .appearance.colors.scheme) .appearance.colors.primary | printf "#%06x" }}";
+
+# Blur
+blur: {
+    method = "gaussian";
+    size = 10;
+    deviation = 5.0;
+};
+blur-background-exclude = [
+    "window_type *= 'utility'",  # peek
+    "window_type *= 'dialog'"    # xfce4-screenshooter
+];
+
+# Rounded corners
+detect-rounded-corners = true;
+corner-radius = 10;
+rounded-corners-exclude = [
+    "name ~= '^dzen'",
+    "name ~= '^polybar'",
+    "class_i = 'dmenu'",
+];
+
+# Other
+backend = "glx";
+
+# https://bbs.archlinux.org/viewtopic.php?pid=1928416#p1928416
+xrender-sync-fence = true;
+vsync = true;
+
+mark-wmwin-focused = true;
+mark-ovredir-focused = true;
+detect-client-opacity = true;
+unredir-if-possible = true;
+unredir-if-possible-delay = 3000;
+detect-transient = true;
+detect-client-leader = true;
+
+opacity-rule = ["25:class_i = 'presel_feedback'"];
+
+# Window type settings
+wintypes: {
+  dock = { shadow = false };
+  dnd = { shadow = false };
+  tooltip = { fade = true; shadow = true; opacity = 0.90; focus = true; };
+};

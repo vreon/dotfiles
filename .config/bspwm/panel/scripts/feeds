@@ -1,6 +1,0 @@
-#!/bin/sh
-
-while true; do
-    echo "F$(newsbeuter -x reload print-unread | awk '{ print $1 }')"
-    sleepid 2h $1
-done

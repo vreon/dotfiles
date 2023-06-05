@@ -1,0 +1,6 @@
+#!/bin/sh
+# Set keyboard layout when keyboard is plugged in
+# Invoked by /etc/udev/rules.d/91-mx-keyboard.rules
+setxkbmap -option "compose:rwin"
+setxkbmap -option "caps:swapescape"
+setxkbmap -option "altwin:swap_lalt_lwin"

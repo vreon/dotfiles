@@ -1,0 +1,135 @@
+###########################################################
+# zsh config
+# vim: ft=zsh
+
+HISTFILE=~/.histfile
+HISTSIZE=10000
+SAVEHIST=50000
+
+bindkey -e            # emacs-style bindings
+setopt nobeep         # no beeps plz
+setopt noflowcontrol  # make C-s and C-q do nothing
+setopt appendhistory  # dont clobber history files
+setopt interactivecomments  # allow trailing comments
+
+# Enable completion
+zstyle :compinstall filename "~/.zshrc"
+autoload -Uz compinit
+
+# Normally just `compinit`, but we can speed that up by
+# only regenerating the cache once a day
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
+
+# When completion lists directory contents, use colors
+if [ -x /usr/bin/dircolors ]; then
+  eval "`dircolors`"
+  zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+  LS_COLORS=
+fi
+
+zstyle ':completion:*' menu select
+
+# Enable editing long commands
+autoload -U edit-command-line
+
+###########################################################
+# Key bindings
+
+zle -N edit-command-line
+bindkey '^xe' edit-command-line  # Ctrl+X, E
+bindkey '^x^e' edit-command-line  # Ctrl+X, Ctrl+E
+bindkey '^[[Z' reverse-menu-complete  # Shift+Tab
+
+###########################################################
+# Functions and aliases
+
+# Expand aliases to some other commands
+alias sudo='sudo '
+alias watch='watch '
+
+# Colorize all the things
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+
+# Shortcuts and common actions
+alias by='bat --language yaml --theme DarkNeon'
+alias cz='chezmoi'
+alias dc='docker compose'
+alias dcr='docker compose run --rm'
+alias gcm='git checkout $(git default-branch)'
+alias gco='git checkout'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gfop='git fetch origin --prune'
+alias gl='git log --pretty=fancy --date=short --no-merges'
+alias gla='git log --pretty=fancy --date=short'
+alias gnvm='git reset . && git checkout . && git checkout $(git default-branch)'
+alias gp='git pull'
+alias gr='rg --smart-case'
+alias grmb='git branch --merged | grep -v "^master$" | grep -v "^main$" | xargs git branch -d'
+alias gs='git status --short --branch'
+alias gspf='git stash show -p | git apply && git stash drop'
+alias k='kubectl'
+alias kz='kustomize'
+alias kzb='kustomize build --enable-alpha-plugins'
+
+gmtb() {
+  git checkout -b $1 && git checkout $(git default-branch) && git reset --hard HEAD~1 && git checkout $1
+}
+
+###########################################################
+# Environment
+
+if command -v nvim > /dev/null; then
+  export EDITOR=$(command -v nvim)
+  export NVIM_LISTEN_ADDRESS=/tmp/nvim
+  alias vim='nvim'
+  alias vimdiff='nvim -d'
+else
+  export EDITOR=$(command -v vim)
+fi
+
+export HOSTCOLOR="{{ .appearance.colors.primary }}"
+export PROJECT_HOME="$HOME/Projects"
+export PYTHONSTARTUP="$HOME/.config/python/pythonrc.py"
+export GOPATH="${PROJECT_HOME}/go"
+
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$GOPATH/bin"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+###########################################################
+# oneoffs
+
+if [ -f $HOME/.local/bin/oneoff ]; then
+  export ONEOFF_HOME=$PROJECT_HOME/oneoffs
+  source $HOME/.local/bin/oneoff
+  alias oo='oneoff'
+fi
+
+###########################################################
+# Prompt
+
+# Enable vcs_info, for git branch
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git*' formats ':%b'
+precmd() { vcs_info }
+
+setopt prompt_subst
+
+if [ -n "$MINIMAL_PROMPT" ]; then
+  PROMPT='%F{${HOSTCOLOR}}>%f '
+else
+  PROMPT='%F{${HOSTCOLOR}}[%n@%m %~]${vcs_info_msg_0_}$%f '
+fi
+
+###########################################################
+# Other includes
+
+eval "$(direnv hook zsh)"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.zshrc_local ] && source ~/.zshrc_local

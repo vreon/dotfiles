@@ -1,2 +1,0 @@
-#!/bin/bash
-dmenu_run -fn "PragmataPro-11px" -sf "$(xrq colorscheme.color${HOSTCOLOR})" -sb "$(xrq colorscheme.background)" -nf "$(xrq colorscheme.foreground)" -nb "$(xrq colorscheme.color0)"

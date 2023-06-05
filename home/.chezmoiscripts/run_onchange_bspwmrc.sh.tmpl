@@ -1,0 +1,12 @@
+#!/bin/sh
+# vim: ft=sh
+# bspwmrc template hash: {{ include "dot_config/bspwm/executable_bspwmrc.tmpl" | sha256sum }}
+# appearance hash: {{ .appearance | toJson | sha256sum }}
+
+if command -v bspc >/dev/null && bspc wm -g >/dev/null 2>&1; then
+	bspc wm -r
+fi
+
+if command -v notify-send >/dev/null; then
+	notify-send -t 3000 "bspwm" "configuration reloaded by chezmoi"
+fi

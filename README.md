@@ -1,29 +1,9 @@
-### vreon's dotfiles
+# vreon's dotfiles
 
-![Screenshot of desktop at 9d25246](screen.png)
+My `/home` away from `/home`. Managed with [chezmoi](https://chezmoi.io).
 
-Required packages:
+```sh
+sh -c "$(curl -fsLS get.chezmoi.io/lb)" -- init --apply vreon
+```
 
-  - bspwm-git *
-  - rxvt-unicode
-  - sxhkd-git *
-  - zsh
-
-Optional packages:
-
-  - compton-git *
-  - dmenu-xft *
-  - dzen2
-  - feh
-  - mpc
-  - mpd
-  - pass
-  - redshift
-  - sutils-git *
-  - sxiv-git ~
-  - unclutter
-  - xfce4-notify
-  - xfce4-screenshooter
-
-\* AUR package  
-~ patched version from https://github.com/vreon/pkgbuilds
+![Screenshot of desktop](screen.png)

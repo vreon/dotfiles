@@ -1,0 +1,41 @@
+# Configuration for Alacritty, the GPU enhanced terminal emulator.
+# vim: ft=yaml
+
+colors:
+  primary:
+    background: '{{ index (index .appearance.colors.schemes .appearance.colors.scheme) 16 | printf "#%06x" }}'
+    foreground: '{{ index (index .appearance.colors.schemes .appearance.colors.scheme) 17 | printf "#%06x" }}'
+    dim_foreground: '{{ index (index .appearance.colors.schemes .appearance.colors.scheme) .appearance.colors.primary | printf "#%06x" }}'
+  normal:
+    black:   '{{ index (index .appearance.colors.schemes .appearance.colors.scheme)  0 | printf "#%06x" }}'
+    red:     '{{ index (index .appearance.colors.schemes .appearance.colors.scheme)  1 | printf "#%06x" }}'
+    green:   '{{ index (index .appearance.colors.schemes .appearance.colors.scheme)  2 | printf "#%06x" }}'
+    yellow:  '{{ index (index .appearance.colors.schemes .appearance.colors.scheme)  3 | printf "#%06x" }}'
+    blue:    '{{ index (index .appearance.colors.schemes .appearance.colors.scheme)  4 | printf "#%06x" }}'
+    magenta: '{{ index (index .appearance.colors.schemes .appearance.colors.scheme)  5 | printf "#%06x" }}'
+    cyan:    '{{ index (index .appearance.colors.schemes .appearance.colors.scheme)  6 | printf "#%06x" }}'
+    white:   '{{ index (index .appearance.colors.schemes .appearance.colors.scheme)  7 | printf "#%06x" }}'
+  bright:
+    black:   '{{ index (index .appearance.colors.schemes .appearance.colors.scheme)  8 | printf "#%06x" }}'
+    red:     '{{ index (index .appearance.colors.schemes .appearance.colors.scheme)  9 | printf "#%06x" }}'
+    green:   '{{ index (index .appearance.colors.schemes .appearance.colors.scheme) 10 | printf "#%06x" }}'
+    yellow:  '{{ index (index .appearance.colors.schemes .appearance.colors.scheme) 11 | printf "#%06x" }}'
+    blue:    '{{ index (index .appearance.colors.schemes .appearance.colors.scheme) 12 | printf "#%06x" }}'
+    magenta: '{{ index (index .appearance.colors.schemes .appearance.colors.scheme) 13 | printf "#%06x" }}'
+    cyan:    '{{ index (index .appearance.colors.schemes .appearance.colors.scheme) 14 | printf "#%06x" }}'
+    white:   '{{ index (index .appearance.colors.schemes .appearance.colors.scheme) 15 | printf "#%06x" }}'
+font:
+  normal:
+    family: '{{ .appearance.terminal.font.family }}'
+    style: '{{ .appearance.terminal.font.style }}'
+  size: {{ .appearance.terminal.font.size }}
+window:
+  dimensions:
+    columns: 94
+    lines: 24
+  padding:
+    x: 6
+    y: 6
+  dynamic_padding: true
+  decorations: none
+  opacity: {{ .appearance.terminal.opacity }}

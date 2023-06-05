@@ -1,0 +1,8 @@
+#!/bin/bash
+dmenu_run \
+  -p '>' \
+  -fn "Noto Sans Condensed Medium-13px" \
+  -sf "{{ index (index .appearance.colors.schemes .appearance.colors.scheme) 17 | printf "#%06x" }}" \
+  -sb "{{ index (index .appearance.colors.schemes .appearance.colors.scheme) .appearance.colors.primary | printf "#%06x" }}" \
+  -nf "{{ index (index .appearance.colors.schemes .appearance.colors.scheme) 8 | printf "#%06x" }}" \
+  -nb "{{ index (index .appearance.colors.schemes .appearance.colors.scheme) 16 | printf "#%06x" }}"

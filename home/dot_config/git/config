@@ -1,0 +1,17 @@
+[user]
+	name = Jesse Dubay
+	email = jesse@jessedubay.com
+[url "git@github.com"]
+	insteadOf = gh
+[color]
+	ui = true
+[push]
+	default = simple
+[pretty]
+	fancy = "format:%C(yellow)%h%C(reset) %C(cyan)%ad%C(reset) %C(green)%aN%Creset%C(bold red)%d%C(reset) %s"
+[commit]
+	verbose = true
+[pull]
+	rebase = true
+[init]
+	defaultBranch = main

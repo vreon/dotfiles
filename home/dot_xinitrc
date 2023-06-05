@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# Source files from xinitrc.d
+if [ -d /etc/X11/xinit/xinitrc.d ]; then
+	for f in /etc/X11/xinit/xinitrc.d/*; do
+		[ -x "$f" ] && . "$f"
+	done
+	unset f
+fi
+
+has() {
+	command -v "$1" >/dev/null 2>&1
+}
+
+# TODO: Set up actual udev rules for this
+~/.local/bin/kbd-udev
+
+export PATH="${PATH}:~/.local/bin"
+export GTK_IM_MODULE="xim"
+xrdb -load .Xresources
+xsetroot -cursor_name left_ptr
+sxhkd &
+[ -f ~/.fehbg ] && sh ~/.fehbg &
+has picom && picom -b
+has unclutter && unclutter -root &
+exec bspwm

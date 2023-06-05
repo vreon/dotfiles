@@ -1,0 +1,250 @@
+#!/bin/bash
+#
+# oneoff: a utility for managing exploratory project dirs
+#
+# This exists because I needed something to fill the gap between `mkdir
+# ~/Projects/some-project` and `mktemp -d`.
+#
+# I got tired of having to think of a name as the very first step every time I
+# wanted to kick some code around, and as `~/tmp` began to fill up with `foo`
+# and `asdf` dirs I realized something had to change or I'd lose it.
+#
+# With oneoff, the workflow becomes:
+#
+#   .oO( inspiration! )
+#
+#   [me@home ~]$ oneoff new 'tinkering with some new library'
+#   [me@home ~/Projects/oneoffs/pikidono]$
+#
+#   .oO( hack hack hack... )
+#
+#   ~ several days later ~
+#
+#   [me@home ~]$ oneoff ls
+#   #  ID        CREATED AT                 DESCRIPTION
+#   1  butonoba  2019-05-29T10:01:48-07:00  xml parsing
+#   2  moyohuse  2019-06-01T13:30:10-07:00  neural networks
+#   3  pikidono  2019-06-03T22:27:17-07:00  tinkering with some new library
+#
+#   [me@home ~]$ oneoff cd 3  # or pikidono
+#
+#   .oO( hack hack hack )
+#   .oO( ... hey, this thing looks like it might actually pan out! )
+#
+#   [me@home ~/Projects/oneoffs/pikidono]$ oneoff promote
+#   enter project name: librarian
+#
+#   [me@home ~/Projects/librarian]$ cat README.md
+#   # librarian
+#   tinkering with some new library
+#
+# Pretty cool!
+#
+# /!\ FYI: Requires jq
+# /!\ FYI: Source this file in your shell profile
+# (i) Tip: alias oo='oneoff'. It's quick to type and it's also the sound one
+#     might make when one has a cool idea.
+
+#############################################################################
+# Config
+
+# Location of oneoffs directory
+ONEOFF_HOME="${ONEOFF_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/oneoffs}"
+
+# Name of per-oneoff metadata file
+ONEOFF_FILE="${ONEOFF_FILE:-.oneoff.json}"
+
+# Location of "real" project directory
+PROJECT_HOME="${PROJECT_HOME:-$HOME/src}"
+
+#############################################################################
+# Internal helpers
+
+# Generate a short string of lowercase chars (just for aesthetics)
+# Hat tip to @cincodenada for the "pronounceable-ish" implementation
+function _oneoff_generate_id() {
+    paste \
+        <(tr -dc 'a-z' < /dev/urandom | tr -d 'aeiou' | fold -w1) \
+        <(tr -dc 'aeiou' < /dev/urandom | fold -w1) \
+    | head -n4 | tr -d '\t\n'
+}
+
+# Given an ID or an index, return the path for the matching oneoff directory
+function _oneoff_resolve_dir() {
+    local id_or_index=$1
+
+    if [ -z "${id_or_index}" ]; then
+        local dir="$(pwd)"
+    else
+        if [[ "${id_or_index}" =~ ^[0-9]+$ ]]; then
+            # It's an index! Convert it to an id
+            id_or_index=$(sed "${id_or_index}q;d" <(ls "${ONEOFF_HOME}") 2>/dev/null)
+            if [ -z "${id_or_index}" ]; then
+                # Uh, but wait, it's not a valid index
+                >&2 echo 'error: index does not match any oneoffs'
+                return 1
+            fi
+        fi
+        local dir="${ONEOFF_HOME}/${id_or_index}"
+    fi
+
+    if [ ! -e "${dir}/${ONEOFF_FILE}" ]; then
+        >&2 echo "error: target dir isn't a oneoff"
+        return 1
+    fi
+
+    echo "${dir}"
+}
+
+
+#############################################################################
+# Commands
+
+# Change to a oneoff's directory
+function oneoff_cd() {
+    local dir="$(_oneoff_resolve_dir "$1")"
+    [ $? -eq 0 -a -n "${dir}" ] || return 1
+
+    cd "${dir}"
+}
+
+# Print metadata for a oneoff
+function oneoff_info() {
+    local dir="$(_oneoff_resolve_dir "$1")"
+    [ $? -eq 0 -a -n "${dir}" ] || return 1
+
+    cat "${dir}/${ONEOFF_FILE}"
+}
+
+# List oneoffs
+function oneoff_ls() {
+    local index=1
+    (
+        echo '#|ID|CREATED AT|DESCRIPTION'
+        for dir in ${ONEOFF_HOME}/*/; do
+            echo -n $index
+            echo -n '|'
+            echo -n "$(basename ${dir})"
+            echo -n '|'
+            jq -r '"\(.createdAt)|\(.description)"' < "${dir}${ONEOFF_FILE}"
+            index=$((index + 1))
+        done
+    ) 2>/dev/null | column -t -s '|'
+}
+
+# Create a oneoff
+function oneoff_new() {
+    local description=$1
+    local id=$(_oneoff_generate_id)
+    local dir="${ONEOFF_HOME}/${id}"
+    mkdir -p "${dir}"
+    cd "${dir}"
+    jq -rn '{
+        createdAt: $createdAt,
+        description: $description
+    }' \
+        --arg description "${description}" \
+        --arg createdAt "$(date --iso-8601=seconds)" \
+        > "${ONEOFF_FILE}"
+    git init
+}
+
+# Promote a oneoff to a real project
+function oneoff_promote() {
+    local dir="$(_oneoff_resolve_dir "$1")"
+    [ $? -eq 0 ] || return 1
+
+    local name=$2
+
+    if [ -z "${name}" ]; then
+        # Prompt if not provided
+        # Weird, but allows promotion of cwd
+        echo -n 'enter project name: '
+        read -r name
+    fi
+
+    if [ -z "${name}" ]; then
+        >&2 echo "error: missing project NAME"
+        return 1
+    fi
+
+    local project_dir="${PROJECT_HOME}/${name}"
+
+    if ! mkdir -p "${project_dir}"; then
+        >&2 echo "error: couldn't promote to that project name (is it taken?)"
+        return 1
+    fi
+
+    # We're going to move the whole oneoff dir
+    rmdir "${project_dir}"
+
+    # Possibly generate a README.md from oneoff metadata
+    if [ ! -e "${dir}/README.md" ]; then
+        cat <<EOF > README.md
+# ${name}
+
+$(jq -r .description < "${dir}/${ONEOFF_FILE}")
+EOF
+    fi
+
+    mv "${dir}" "${project_dir}"
+    cd "${project_dir}"
+}
+
+# Delete a oneoff
+function oneoff_rm() {
+    local dir="$(_oneoff_resolve_dir "$1")"
+    [ $? -eq 0 -a -n "${dir}" ] || return 1
+
+    # A visual hint, since we're about to delete this sucker
+    echo "${dir}"
+
+    rm -rfI "${dir}" && cd "${HOME}"
+}
+
+# Prints usage documentation
+function oneoff_usage() {
+    echo "Usage: oneoff [-h] COMMAND"
+    echo "Manage exploratory project directories."
+    echo
+    echo "Commands:"
+    echo "  cd [ID|INDEX]              Change to a oneoff's directory"
+    echo "  info [ID|INDEX]            Print metadata for a oneoff"
+    echo "  ls                         List oneoffs"
+    echo "  new [DESC]                 Create a oneoff"
+    echo "  promote [ID|INDEX] [NAME]  Promote a oneoff to a real project"
+    echo "  rm [ID|INDEX]              Delete a oneoff"
+    echo
+    echo "Options: "
+    echo "  -h      Show this usage message and exit"
+}
+
+#############################################################################
+# Main
+
+function oneoff() {
+    while getopts ":h" opt; do
+        case "${opt}" in
+            h) oneoff_usage && return 0 ;;
+            \?) oneoff_usage >&2 && return 1 ;;
+        esac
+    done
+
+    shift $((OPTIND -1))
+
+    cmd=$1
+
+    [ -z "${cmd}" ] && oneoff_usage && return 0
+
+    shift
+
+    case "${cmd}" in
+        cd) oneoff_cd "$@" ;;
+        info) oneoff_info "$@" ;;
+        ls) oneoff_ls ;;
+        new) oneoff_new "$@" ;;
+        promote) oneoff_promote "$@" ;;
+        rm) oneoff_rm "$@" ;;
+        *) oneoff_usage >&2 && return 1 ;;
+    esac
+}

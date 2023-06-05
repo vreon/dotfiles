@@ -1,4 +1,0 @@
-#define transit_width 8
-#define transit_height 8
-static unsigned char transit_bits[] = {
-   0x00, 0x18, 0x04, 0x7e, 0x42, 0x7e, 0x7e, 0x24 };
