@@ -1,7 +1,8 @@
 #!/bin/sh
 # vim: ft=sh
+# dunstrc template hash: {{ include "dot_config/dunst/dunstrc.tmpl" | sha256sum }}
 # appearance hash: {{ .appearance.colors | toJson | sha256sum }}
 
 if command -v dunst >/dev/null; then
-  killall -q dunst
+  killall -q dunst || true
 fi
