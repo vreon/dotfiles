@@ -5,7 +5,6 @@ colors:
   primary:
     background: '{{ index (index .appearance.colors.schemes .appearance.colors.scheme) 16 | printf "#%06x" }}'
     foreground: '{{ index (index .appearance.colors.schemes .appearance.colors.scheme) 17 | printf "#%06x" }}'
-    dim_foreground: '{{ index (index .appearance.colors.schemes .appearance.colors.scheme) .appearance.colors.primary | printf "#%06x" }}'
   normal:
     black:   '{{ index (index .appearance.colors.schemes .appearance.colors.scheme)  0 | printf "#%06x" }}'
     red:     '{{ index (index .appearance.colors.schemes .appearance.colors.scheme)  1 | printf "#%06x" }}'
