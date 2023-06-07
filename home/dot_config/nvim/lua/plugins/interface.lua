@@ -5,20 +5,6 @@ return {
     opts = {}, -- empty, but apparently required to initialize
   },
 
-  -- extra colorschemes
-  { "Shatur/neovim-ayu" },
-  -- { "rebelot/kanagawa.nvim" },
-
-  -- set colorscheme
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "ayu-dark",
-      -- colorscheme = "catppuccin",
-      -- colorscheme = "kanagawa",
-    },
-  },
-
   -- Rounded borders around windows where possible
   {
     "LazyVim/LazyVim",

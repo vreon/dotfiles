@@ -1,0 +1,15 @@
+-- vim: ft=lua
+-- WARN: this file is managed as a chezmoi template
+
+return {
+  -- extra colorschemes
+  { "Shatur/neovim-ayu" },
+
+  -- set current colorscheme from chezmoi config
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "{{ .appearance.neovim.colorscheme }}"
+    },
+  },
+}
