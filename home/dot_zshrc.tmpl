@@ -130,7 +130,7 @@ fi
 ###########################################################
 # Other includes
 
-eval "$(chezmoi completion zsh)"
-eval "$(direnv hook zsh)"
+command -v chezmoi > /dev/null && eval "$(chezmoi completion zsh)"
+command -v direnv > /dev/null && eval "$(direnv hook zsh)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.zshrc_local ] && source ~/.zshrc_local
