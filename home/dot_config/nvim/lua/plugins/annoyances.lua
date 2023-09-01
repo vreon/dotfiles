@@ -1,7 +1,13 @@
 return {
+  -- Disable animated popups.
+  { "rcarriga/nvim-notify",            enabled = false },
+
+  -- Disable fancy jumping, which isn't compatible with my muscle memory.
+  { "folke/flash.nvim",                enabled = false },
+
   -- Disable automatic brace/bracket/paren insertion, which gets in my way more
   -- often than it helps.
-  { "echasnovski/mini.pairs", enabled = false },
+  { "echasnovski/mini.pairs",          enabled = false },
 
   -- Disable nvim-treesitter powered indentation, it's not quite there yet, esp. for YAML
   { "nvim-treesitter/nvim-treesitter", opts = { indent = { enable = false } } },
