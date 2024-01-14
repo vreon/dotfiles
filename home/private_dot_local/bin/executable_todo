@@ -2,13 +2,17 @@
 # Find and open the nearest TODO file (or -g for the one in my homedir)
 
 if [ "$1" = "-g" ]; then
-    tpath=$HOME
+	tpath=$HOME
 else
-    tpath=$(pwd)
-    while [[ "$tpath" != "" && ! -e "$tpath/TODO" ]]; do
-        tpath=${tpath%/*}
-    done
-    [ -z "$tpath" ] && tpath=$HOME
+	tpath=$(pwd)
+	while [[ "$tpath" != "" && ! -e "$tpath/TODO" && ! -e "$tpath/TODO.md" ]]; do
+		tpath=${tpath%/*}
+	done
+	[ -z "$tpath" ] && tpath=$HOME
 fi
 
-$EDITOR "$tpath/TODO"
+if [ -e "$tpath/TODO.md" ]; then
+	$EDITOR "$tpath/TODO.md"
+else
+	$EDITOR "$tpath/TODO"
+fi
