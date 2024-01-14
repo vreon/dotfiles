@@ -1,10 +1,4 @@
 return {
-  -- highlight color codes
-  {
-    "brenoprata10/nvim-highlight-colors",
-    opts = {}, -- empty, but apparently required to initialize
-  },
-
   -- Rounded borders around windows where possible
   {
     "LazyVim/LazyVim",

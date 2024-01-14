@@ -10,7 +10,9 @@ return {
         "bash-language-server",
         "black",
         "ruff-lsp",
+        "prettier",
         "shellcheck",
+        "svelte-language-server",
         "terraform-ls",
       })
     end,
@@ -22,22 +24,11 @@ return {
     opts = function(_, opts)
       ---@diagnostic disable-next-line: missing-parameter
       vim.list_extend(opts.ensure_installed, {
+        "css",
         "graphql",
         "hcl",
+        "svelte",
       })
-    end,
-  },
-
-  -- Formatters
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    opts = function()
-      local nls = require("null-ls")
-      return {
-        sources = {
-          nls.builtins.formatting.black,
-        },
-      }
     end,
   },
 }
